@@ -1,0 +1,55 @@
+{
+  "project_info": {
+    "project_number": "926777956290",
+    "firebase_url": "https://nurses-lecture-room-5bd21.firebaseio.com",
+    "project_id": "nurses-lecture-room-5bd21",
+    "storage_bucket": "nurses-lecture-room-5bd21.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:926777956290:android:8608ce816e1d21a9",
+        "android_client_info": {
+          "package_name": "com.mazimia.mobile.nurselectureroom"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "926777956290-h7t0437ddi6a3hj8lunnvaqatst4t2ae.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.mazimia.mobile.nurselectureroom",
+            "certificate_hash": "fd33e0218822987bc0bd7cfe5b00782f6d825e67"
+          }
+        },
+        {
+          "client_id": "926777956290-1bba6q2emo340bo5blrjupdavmlkviti.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAhf-Bg94q16D5UFWZHP7zI8CJiZgKO0tM"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "926777956290-1bba6q2emo340bo5blrjupdavmlkviti.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
