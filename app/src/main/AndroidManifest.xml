@@ -16,6 +16,12 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <activity android:name=".WelcomeActivity" />
+        <activity android:name=".SignOutActivity" />
+        <activity android:name=".NurseRoomActivity" />
+        <activity android:name=".FeedbackActivity" />
+        <activity android:name=".HighScoreActivity" />
+        <activity android:name=".AboutActivity"></activity>
     </application>
 
 </manifest>
