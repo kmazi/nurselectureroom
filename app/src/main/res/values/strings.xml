@@ -1,3 +1,10 @@
 <resources>
-    <string name="app_name">nurse lecture room</string>
+    <string name="app_name">Nurse Lecture Room</string>
+    <string name="userProfile">Welcome nurse</string>
+    <string name="login">Login</string>
+    <string name="signout">Log Out</string>
+    <string name="nurse_room">Nurse Room</string>
+    <string name="highscore">Highscore</string>
+    <string name="feedback">Feedback</string>
+    <string name="about">About</string>
 </resources>
