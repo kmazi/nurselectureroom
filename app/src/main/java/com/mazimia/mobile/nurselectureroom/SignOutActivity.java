@@ -7,18 +7,40 @@ import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.widget.Toast;
 
 import com.firebase.ui.auth.AuthUI;
 import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
+import com.google.firebase.firestore.FirebaseFirestore;
+
+import java.util.Random;
 
 public class SignOutActivity extends AppCompatActivity {
+
+    private StoreUtil storeUtil;
+    private LectureSection lectureSec;
+    private Lecture lecture;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_sign_out);
+
+        FirebaseFirestore db = FirebaseFirestore.getInstance();
+        storeUtil = new StoreUtil(db);
+        lectureSec = new LectureSection(
+                "AIDS39",
+                "Blood is essential in the live of humans",
+                "doc/start/jump/" + Math.random());
+
+        lecture = new Lecture("Backache",
+                "Back pain is not an easy thing down here",
+                "Just trying this out to see if it would work");
+        lecture.setLecture();
     }
 
 
@@ -40,6 +62,22 @@ public class SignOutActivity extends AppCompatActivity {
             case R.id.sign_out_menu:
                 signOutUser();
                 return true;
+
+            case R.id.add_section:
+                storeUtil.createLectureSection(lectureSec, new OnSuccessListener<Void>() {
+                    @Override
+                    public void onSuccess(Void aVoid) {
+                        Toast.makeText(SignOutActivity.this, "Successfully deleted the section", Toast.LENGTH_LONG);
+                    }
+                });
+
+            case R.id.add_lecture:
+                storeUtil.createLecture(lectureSec, lecture, new OnSuccessListener<Void>() {
+                    @Override
+                    public void onSuccess(Void aVoid) {
+                        Toast.makeText(SignOutActivity.this, "Successfully deleted the section", Toast.LENGTH_LONG);
+                    }
+                });
         }
         return true;
     }
