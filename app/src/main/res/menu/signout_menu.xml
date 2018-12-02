@@ -7,8 +7,8 @@
         android:title="@string/signout" />
 
     <item android:title="@string/add_section"
-        android:id="@+id/add_section"/>
+        android:id="@+id/add_section_menu"/>
 
     <item android:title="@string/add_lecture"
-        android:id="@+id/add_lecture"/>
+        android:id="@+id/add_lecture_menu"/>
 </menu>

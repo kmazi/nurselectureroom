@@ -14,7 +14,7 @@ class Lecture {
     private String note;
     private Map<String, Object> lecture;
 
-    public final String TIMESTAMP = "timestamp";
+    //public final String TIMESTAMP = "timestamp";
     public final static String TITLE = "title";
     public final static String SUMMARY = "summary";
     public final static String NOTE = "note";
@@ -84,7 +84,7 @@ class Lecture {
         lecture.put(TITLE, topic);
         lecture.put(SUMMARY, description);
         lecture.put(NOTE, note);
-        lecture.put(TIMESTAMP, Calendar.getInstance().getTime());
+        //lecture.put(TIMESTAMP, Calendar.getInstance().getTime());
 
     }
 

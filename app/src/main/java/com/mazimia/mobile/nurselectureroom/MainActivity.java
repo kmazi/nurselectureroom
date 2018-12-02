@@ -39,12 +39,12 @@ public class MainActivity extends AppCompatActivity {
     }
 
 
-    @Override
-    protected void onStart() {
-        // check if the user is authenticated and take necessary actions
-        super.onStart();
-        updateUI(mAuth.getCurrentUser());
-    }
+//    @Override
+//    protected void onStart() {
+//        // check if the user is authenticated and take necessary actions
+//        super.onStart();
+//        updateUI(mAuth.getCurrentUser());
+//    }
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {

@@ -9,18 +9,34 @@ class LectureSection {
     private String title;
     private String thumbnail;
     private String summary;
+    private Map<String, Object> lectures;
+    private Map<String, Object> objectives;
+    private Map<String, Object> theory;
 
     public final static String TITLE = "title";
     public final static String SUMMARY = "summary";
-    public final static String THUMBNAIL = "thumbnail_url";
+    public final static String THUMBNAIL = "thumbnail";
     public final static String TIMESTAMP = "timestamp";
 
+
+    // lecture section constructor
+    public LectureSection(String section_title) {
+        title = section_title;
+        thumbnail = "";
+        summary = "";
+        lectures = new HashMap<>();
+        objectives = new HashMap<>();
+        theory = new HashMap<>();
+    }
 
     // lecture section constructor
     public LectureSection(String section_title, String section_summary) {
         title = section_title;
         thumbnail = "";
         summary = section_summary;
+        lectures = new HashMap<>();
+        objectives = new HashMap<>();
+        theory = new HashMap<>();
     }
 
     // lecture section constructor
@@ -28,8 +44,39 @@ class LectureSection {
         title = section_title;
         thumbnail = imageUrl;
         summary = section_summary;
+        lectures = new HashMap<>();
+        objectives = new HashMap<>();
+        theory = new HashMap<>();
     }
 
+    // setter for lectures
+    public void setLectures(Map<String, Object> lectures) {
+        this.lectures = lectures;
+    }
+
+    // setter for objectives
+    public void setObjectives(Map<String, Object> objectives) {
+        this.objectives = objectives;
+    }
+
+    // setter for theory questions
+    public void setTheory(Map<String, Object> theory) {
+        this.theory = theory;
+    }
+
+    // provides access to lectures
+    public Map<String, Object> getLectures() {
+        return lectures;
+    }
+
+    // provides access to objectives
+    public Map<String, Object> getObjectives() {
+        return objectives;
+    }
+
+    public Map<String, Object> getTheory() {
+        return theory;
+    }
 
     // provides access to the title of the section
     public String getTitle() {
@@ -67,8 +114,17 @@ class LectureSection {
 
         Map<String, Object> section = new HashMap<>();
         section.put(TITLE, getTitle());
-        section.put(SUMMARY, getSummary());
-        section.put(THUMBNAIL, getThumbnail());
+
+        if (this.summary != "") {
+
+            section.put(SUMMARY, getSummary());
+        }
+
+        if (this.thumbnail != "") {
+
+            section.put(THUMBNAIL, getThumbnail());
+        }
+
         section.put(TIMESTAMP, Calendar.getInstance().getTime());
         return section;
     }
