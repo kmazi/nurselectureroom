@@ -25,10 +25,10 @@ public class FireStoreUtil {
 
     private CollectionReference lectureSections;
     private final String TAG = "Lecture section";
-    private final String LECTURE_SECTIONS = "lecture-sections";
+    private final String LECTURE_SECTIONS = "Sections";
     private final String LECTURES = "lectures";
 
-    private static ArrayList<Map<String, Object>> sections = new ArrayList<>();
+    private static ArrayList<Section> sections = new ArrayList<>();
     private Map<String, Object> section = new HashMap<>();
 
     public FireStoreUtil(FirebaseFirestore db) {
@@ -37,26 +37,24 @@ public class FireStoreUtil {
     }
 
     // Creates lecture section
-    public void createLectureSection(LectureSection lectureSection,
-                                     OnSuccessListener<DocumentReference> successAction) {
+    public void createLectureSection(Section section,
+                                     final OnCompleteListener<Void> successAction,
+                                     OnFailureListener failAction) {
 
-        lectureSections.add(lectureSection)
-                .addOnSuccessListener(successAction)
-                .addOnFailureListener(new OnFailureListener() {
-
+        lectureSections.add(section)
+                .addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
                     @Override
-                    public void onFailure(@NonNull Exception e) {
-
-                        // do something when it fails
-
+                    public void onSuccess(DocumentReference documentReference) {
+                        String sectionRef = documentReference.getId();
+                        documentReference.update(Section.ID, sectionRef).addOnCompleteListener(successAction);
                     }
-
-                });
+                })
+                .addOnFailureListener(failAction);
     }
 
 
     // Get all lecture sections
-    public ArrayList<Map<String, Object>> getSections() {
+    public ArrayList<Section> getSections() {
 
         // populate the sections field with data from fire base
         getLectureSections();
@@ -72,9 +70,9 @@ public class FireStoreUtil {
 
 
     // Update a lecture section
-    public void updateLectureSection(String title, final LectureSection sec) {
+    public void updateLectureSection(String title, final Section sec) {
 
-        lectureSections.whereEqualTo(LectureSection.TITLE, title)
+        lectureSections.whereEqualTo(Section.TITLE, title)
                 .get()
                 .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
                     @Override
@@ -105,9 +103,9 @@ public class FireStoreUtil {
     }
 
     // Deletes a lecture section
-    public void deleteLectureSection(LectureSection sec) {
+    public void deleteLectureSection(Section sec) {
 
-        lectureSections.whereEqualTo(LectureSection.TITLE, sec.getTitle())
+        lectureSections.whereEqualTo(Section.TITLE, sec.getTitle())
                 .get()
                 .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
                     @Override
@@ -141,7 +139,7 @@ public class FireStoreUtil {
 
     // Get a particular lecture section
     public void getLectureSection(String sectionTitle) {
-        lectureSections.whereEqualTo(LectureSection.TITLE, sectionTitle)
+        lectureSections.whereEqualTo(Section.TITLE, sectionTitle)
                 .get()
                 .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
 
@@ -175,9 +173,7 @@ public class FireStoreUtil {
 
                     for (QueryDocumentSnapshot document : task.getResult()) {
 
-                        Map<String, Object> section = new HashMap<>();
-                        section.putAll(document.getData());
-                        sections.add(section);
+                        sections.add(document.toObject(Section.class));
                     }
 
                 } else {
@@ -190,7 +186,7 @@ public class FireStoreUtil {
 
 
     // Creates lecture for a section
-    public void createLecture(LectureSection section, Lecture lecture,
+    public void createLecture(Section section, Lecture lecture,
                               OnSuccessListener<Void> successAction) {
 
         Map<String, Object> newLecture = new HashMap<>();
@@ -212,7 +208,7 @@ public class FireStoreUtil {
 
 
     // Updates a lecture
-    public void updateLecture(LectureSection section, Lecture lecture,
+    public void updateLecture(Section section, Lecture lecture,
                               OnSuccessListener<Void> successAction) {
 
         lectureSections.document(section.getTitle())
@@ -232,9 +228,9 @@ public class FireStoreUtil {
 
 
     // get lecture from a section
-    public void getLecture(LectureSection lectureSection) {
+    public void getLecture(Section section) {
 
-        lectureSections.document(lectureSection.getTitle())
+        lectureSections.document(section.getTitle())
                 .get()
                 .addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
                     @Override
@@ -246,10 +242,10 @@ public class FireStoreUtil {
 
 
     // Delete a lecture for a section
-    public void deleteLecture(LectureSection lectureSection, Lecture lecture,
+    public void deleteLecture(Section section, Lecture lecture,
                               OnSuccessListener<Void> successAction) {
 
-        lectureSections.document(lectureSection.getTitle())
+        lectureSections.document(section.getTitle())
                 .update(LECTURES, FieldValue.arrayRemove(lecture.getLecture()))
                 .addOnSuccessListener(successAction)
                 .addOnFailureListener(new OnFailureListener() {
