@@ -6,6 +6,8 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 
+import com.google.firebase.auth.FirebaseAuth;
+
 public class WelcomeActivity extends SignOutActivity {
 
     private Button nrButton;
@@ -53,6 +55,17 @@ public class WelcomeActivity extends SignOutActivity {
                 aboutActivity();
             }
         });
+    }
+
+
+    @Override
+    protected void onStart() {
+        // check if the user is authenticated and take necessary actions
+        super.onStart();
+        if (FirebaseAuth.getInstance().getCurrentUser() == null) {
+            Intent intent = new Intent(this, MainActivity.class);
+            startActivity(intent);
+        }
     }
 
 
