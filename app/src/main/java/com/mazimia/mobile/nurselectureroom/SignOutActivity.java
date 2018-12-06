@@ -11,6 +11,7 @@ import android.widget.Toast;
 
 import com.firebase.ui.auth.AuthUI;
 import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.DocumentReference;
@@ -19,7 +20,7 @@ import com.google.firebase.firestore.FirebaseFirestore;
 public class SignOutActivity extends AppCompatActivity {
 
     private FireStoreUtil storeUtil;
-    private LectureSection lectureSec;
+    private Section lectureSec;
     private Lecture lecture;
 
     @Override
@@ -30,16 +31,16 @@ public class SignOutActivity extends AppCompatActivity {
 
         FirebaseFirestore db = FirebaseFirestore.getInstance();
         storeUtil = new FireStoreUtil(db);
-        lectureSec = new LectureSection(
-                "AIDS is real in this part of the world",
+        lectureSec = new Section(
+                "Heart Disease",
                 "Blood is essential in the live of humans",
                 "doc/start/jump/" + Math.random());
 
-        lecture = new Lecture("Chest ache",
-                "Chest pain is not an easy thing down here. It might just lead to death",
-                "Please don't try this at home");
-        lecture.setLecture();
-        storeUtil.updateLectureSection("AIDS39", lectureSec);
+        lecture = new Lecture("Back pain",
+                "Pain is pain, whether back or front. It might just lead to death",
+                "Please it doesn't matter");
+        lecture.setId("z3gmjYiF9PREeJyH6XQI");
+        storeUtil.getLecture(lecture);
     }
 
 
@@ -63,10 +64,15 @@ public class SignOutActivity extends AppCompatActivity {
                 return true;
 
             case R.id.add_section_menu:
-                storeUtil.createLectureSection(lectureSec, new OnSuccessListener<DocumentReference>() {
+                storeUtil.createLectureSection(lectureSec, new OnCompleteListener<Void>() {
                     @Override
-                    public void onSuccess(DocumentReference aVoid) {
-                        Toast.makeText(SignOutActivity.this, "Successfully deleted the section", Toast.LENGTH_LONG);
+                    public void onComplete(@NonNull Task<Void> task) {
+                        // do something when its successful
+                    }
+                }, new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        // do something when operation fails
                     }
                 });
                 return true;
