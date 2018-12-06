@@ -76,15 +76,6 @@ public class SignOutActivity extends AppCompatActivity {
                     }
                 });
                 return true;
-
-            case R.id.add_lecture_menu:
-                storeUtil.updateLecture(lectureSec, lecture, new OnSuccessListener<Void>() {
-                    @Override
-                    public void onSuccess(Void aVoid) {
-                        Toast.makeText(SignOutActivity.this, "Successfully deleted the section", Toast.LENGTH_LONG);
-                    }
-                });
-                return true;
         }
         return true;
     }
