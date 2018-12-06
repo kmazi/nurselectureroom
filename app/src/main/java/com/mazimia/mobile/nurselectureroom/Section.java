@@ -16,6 +16,7 @@ class Section {
     public final static String TITLE = "title";
     public final static String SUMMARY = "summary";
     public final static String THUMBNAIL = "thumbnail";
+    public final static String CREATEDAT = "createdAt";
     public final static String ID = "id";
 
 
@@ -96,21 +97,23 @@ class Section {
     }
 
     // create the document to add to a collection
-    public Map<String, Object> createSection() {
+    public Map<String, Object> updateSectionData() {
 
         Map<String, Object> section = new HashMap<>();
-        section.put(TITLE, getTitle());
+        if (this.title != "" && this.title != null) {
+            section.put(TITLE, getTitle());
+        }
 
-        if (this.summary != "") {
+        if (this.summary != "" && this.summary != null) {
 
             section.put(SUMMARY, getSummary());
         }
 
-        if (this.thumbnail != "") {
+        if (this.thumbnail != "" && this.thumbnail != null) {
 
             section.put(THUMBNAIL, getThumbnail());
         }
-
+        section.put(CREATEDAT, Calendar.getInstance().getTime());
         return section;
     }
 }

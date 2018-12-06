@@ -36,12 +36,11 @@ public class SignOutActivity extends AppCompatActivity {
                 "Blood is essential in the live of humans",
                 "doc/start/jump/" + Math.random());
 
-//        lecture = new Lecture("Chest ache",
-//                "Chest pain is not an easy thing down here. It might just lead to death",
-//                "Please don't try this at home");
-//        lecture.setLecture();
-        //storeUtil.updateLectureSection("AIDS39", lectureSec);
-        storeUtil.getSections();
+        lecture = new Lecture("Back pain",
+                "Pain is pain, whether back or front. It might just lead to death",
+                "Please it doesn't matter");
+        lecture.setId("z3gmjYiF9PREeJyH6XQI");
+        storeUtil.getLecture(lecture);
     }
 
 

@@ -1,7 +1,5 @@
 package com.mazimia.mobile.nurselectureroom;
 
-import com.google.firebase.firestore.model.value.NullValue;
-
 import java.util.Calendar;
 import java.util.HashMap;
 import java.util.Map;
@@ -12,12 +10,23 @@ class Lecture {
     private String topic;
     private String description;
     private String note;
+    private String sectionId;
+    private String id;
+    private String createdAt;
+
     private Map<String, Object> lecture;
 
-    //public final String TIMESTAMP = "timestamp";
-    public final static String TITLE = "title";
-    public final static String SUMMARY = "summary";
+    public final String CREATED_AT = "timestamp";
+    public final static String TOPIC = "title";
+    public final static String DESCRIPTION = "summary";
     public final static String NOTE = "note";
+    public final static String ID = "id";
+    public final static String SECTION_ID = "sectionId";
+
+
+    public Lecture() {
+
+    }
 
     public Lecture (String topic, String description) {
 
@@ -35,6 +44,13 @@ class Lecture {
         this.lecture = new HashMap<>();
     }
 
+    public String getSectionId() {
+        return sectionId;
+    }
+
+    public void setSectionId(String sectionId) {
+        this.sectionId = sectionId;
+    }
 
     // getter for topic
     public String getTopic() {
@@ -78,14 +94,42 @@ class Lecture {
     }
 
 
-    // create the lectures for a section
-    public void setLecture() {
+    // create the lecture for a section
+    public Map<String, Object> updateLectureData() {
 
-        lecture.put(TITLE, topic);
-        lecture.put(SUMMARY, description);
-        lecture.put(NOTE, note);
-        //lecture.put(TIMESTAMP, Calendar.getInstance().getTime());
+        Map<String, Object> lecture = new HashMap<>();
+        if (this.topic != "" && this.topic != null) {
+            lecture.put(TOPIC, getTopic());
+        }
 
+        if (this.description != "" && this.description != null) {
+
+            lecture.put(DESCRIPTION, getDescription());
+        }
+
+        if (this.note != "" && this.note != null) {
+
+            lecture.put(NOTE, getNote());
+        }
+
+        if (this.sectionId != "" && this.sectionId != null) {
+
+            lecture.put(SECTION_ID, getSectionId());
+        }
+
+        if (this.id != "" && this.id != null) {
+
+            lecture.put(ID, getId());
+        }
+        lecture.put(CREATED_AT, Calendar.getInstance().getTime());
+        return lecture;
     }
 
+    public String getId() {
+        return this.id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
+    }
 }
