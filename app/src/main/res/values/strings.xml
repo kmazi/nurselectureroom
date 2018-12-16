@@ -1,7 +1,7 @@
 <resources>
     <string name="app_name">Nurse Lecture Room</string>
     <string name="userProfile">Welcome nurse</string>
-    <string name="login">Login</string>
+    <string name="login">Get started</string>
     <string name="signout">Log Out</string>
     <string name="nurse_room">Nurse Room</string>
     <string name="highscore">Highscore</string>
@@ -9,4 +9,9 @@
     <string name="about">About</string>
     <string name="add_section">Add section</string>
     <string name="add_lecture">Add lecture</string>
+    <string name="Studies">Study</string>
+    <string name="Highscore">Highscore</string>
+    <string name="Feedback">Feedback</string>
+    <string name="About">About</string>
+    <string name="about_us">About Us</string>
 </resources>

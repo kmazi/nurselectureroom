@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<shape xmlns:android="http://schemas.android.com/apk/res/android"
+    android:shape="rectangle">
+
+    <corners android:radius="@dimen/avatar_radius" />
+    <solid android:color="@color/nurseGreen" />
+    <size android:height="@dimen/avatar_size"
+        android:width="@dimen/avatar_size" />
+
+</shape>

@@ -1,45 +1,66 @@
 package com.mazimia.mobile.nurselectureroom;
 
 import android.content.Intent;
+import android.opengl.Visibility;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.ViewUtils;
 import android.view.View;
 import android.widget.Button;
+import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+
+import de.hdodenhof.circleimageview.CircleImageView;
 
 public class WelcomeActivity extends SignOutActivity {
 
-    private Button nrButton;
+    private Button studyBtn;
     private Button highScoreButton;
     private Button feedBackButton;
-    private Button aboutButton;
+    private Button aboutBtn;
+    private TextView userProfile;
+    private TextView userImage;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_welcome);
-        nrButton = findViewById(R.id.nrButton);
-        highScoreButton = findViewById(R.id.highscoreBtn);
-        feedBackButton = findViewById(R.id.feedbackBtn);
-        aboutButton = findViewById(R.id.aboutBtn);
 
-        nrButton.setOnClickListener(new View.OnClickListener() {
+        userProfile = findViewById(R.id.welcome_textview);
+        userImage = findViewById(R.id.name_avatar_textview);
+        studyBtn = findViewById(R.id.studyBtn);
+        aboutBtn = findViewById(R.id.aboutBtn);
+        feedBackButton = findViewById(R.id.fback_btn);
+
+        Intent welcomeIntent = getIntent();
+        FirebaseUser currentUser = welcomeIntent.getParcelableExtra("userInfo");
+        String userName = currentUser.getDisplayName();
+        String firstName = userName.split(" ")[0];
+        userProfile.setText(userProfile.getText() + " " + firstName);
+
+        userImage = findViewById(R.id.name_avatar_textview);
+        Character firstInitial = userName.charAt(0);
+        Character secondInitial = userName.charAt(userName.indexOf(" ") + 1);
+        String initials = firstInitial.toString()+secondInitial.toString();
+        userImage.setText(initials);
+
+        studyBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 openNurseRoomActivity();
             }
         });
 
-
-        highScoreButton.setOnClickListener(new View.OnClickListener() {
+        aboutBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                openHighScoreActivity();
+                aboutActivity();
             }
         });
-
 
         feedBackButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -48,13 +69,32 @@ public class WelcomeActivity extends SignOutActivity {
             }
         });
 
+//        CircleImageView avatar = findViewById(R.id.profile_image);
+//        avatar.setVisibility(View.GONE);
+//
+//        Glide.with(WelcomeActivity.this).load(currentUser.getPhotoUrl())
+//                .into(avatar);
+//        avatar.setVisibility(View.VISIBLE);
+//        userImage.setVisibility(View.GONE);
+//        nrButton = findViewById(R.id.nrButton);
+//        highScoreButton = findViewById(R.id.highscoreBtn);
+//        feedBackButton = findViewById(R.id.feedbackBtn);
+//        aboutButton = findViewById(R.id.aboutBtn);
+//
 
-        aboutButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                aboutActivity();
-            }
-        });
+//
+//
+//        highScoreButton.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                openHighScoreActivity();
+//            }
+//        });
+//
+//
+//
+//
+
     }
 
 

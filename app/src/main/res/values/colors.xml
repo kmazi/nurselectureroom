@@ -1,6 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="colorPrimary">#3F51B5</color>
-    <color name="colorPrimaryDark">#303F9F</color>
+    <color name="colorPrimary">#ec4f44</color>
+    <color name="colorPrimaryDark">#af160e</color>
     <color name="colorAccent">#FF4081</color>
+    <color name="backgroundImg">#f3f3fa</color>
+    <color name="btnColor">#d3d4db</color>
+    <color name="btnColor1">#edf5ed</color>
+    <color name="nurseGreen">#eeabfeaf</color>
 </resources>

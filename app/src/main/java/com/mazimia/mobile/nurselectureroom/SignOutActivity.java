@@ -40,7 +40,6 @@ public class SignOutActivity extends AppCompatActivity {
                 "Pain is pain, whether back or front. It might just lead to death",
                 "Please it doesn't matter");
         lecture.setId("z3gmjYiF9PREeJyH6XQI");
-        storeUtil.getLecture(lecture);
     }
 
 

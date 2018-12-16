@@ -68,7 +68,7 @@ public class MainActivity extends AppCompatActivity {
         // log the user in if they've been authenticated otherwise
         // show the auth page
         if (currentUser != null) {
-            logUserIn();
+            logUserIn(currentUser);
         } else {// show the auth page from firebase ui
             authenticateUser();
         }
@@ -89,8 +89,9 @@ public class MainActivity extends AppCompatActivity {
 
 
     // Navigate a user to the landing page after authentication
-    private void logUserIn() {
+    private void logUserIn(FirebaseUser currentUser) {
         Intent startIntent = new Intent(this, WelcomeActivity.class);
+        startIntent.putExtra("userInfo", currentUser);
         startActivity(startIntent);
     }
 }

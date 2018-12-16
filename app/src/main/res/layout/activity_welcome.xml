@@ -4,64 +4,192 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:paddingStart="@dimen/container_padding"
+    android:paddingEnd="@dimen/container_padding"
+    android:paddingBottom="@dimen/container_padding"
     tools:context=".WelcomeActivity">
 
+    <!--<TextView-->
+    <!--android:id="@+id/welcome_textview"-->
+    <!--android:layout_width="wrap_content"-->
+    <!--android:layout_height="wrap_content"-->
+    <!--android:layout_marginTop="@dimen/mid_size_margin"-->
+    <!--android:text="@string/userProfile"-->
+    <!--android:textSize="@dimen/title_case"-->
+    <!--app:layout_constraintEnd_toEndOf="parent"-->
+    <!--app:layout_constraintStart_toStartOf="parent"-->
+    <!--app:layout_constraintTop_toTopOf="parent" />-->
+
+    <!--<Button-->
+    <!--android:id="@+id/nrButton"-->
+    <!--android:layout_width="wrap_content"-->
+    <!--android:layout_height="wrap_content"-->
+    <!--android:layout_marginEnd="8dp"-->
+    <!--android:layout_marginStart="8dp"-->
+    <!--android:layout_marginTop="@android:dimen/app_icon_size"-->
+    <!--android:text="@string/nurse_room"-->
+    <!--app:layout_constraintEnd_toEndOf="parent"-->
+    <!--app:layout_constraintStart_toStartOf="parent"-->
+    <!--app:layout_constraintTop_toBottomOf="@+id/welcome_textview" />-->
+
+    <!--<Button-->
+    <!--android:id="@+id/highscoreBtn"-->
+    <!--android:layout_width="wrap_content"-->
+    <!--android:layout_height="wrap_content"-->
+    <!--android:layout_marginEnd="8dp"-->
+    <!--android:layout_marginStart="8dp"-->
+    <!--android:layout_marginTop="@dimen/mid_size_margin"-->
+    <!--android:text="@string/highscore"-->
+    <!--app:layout_constraintEnd_toEndOf="parent"-->
+    <!--app:layout_constraintStart_toStartOf="parent"-->
+    <!--app:layout_constraintTop_toBottomOf="@+id/nrButton" />-->
+
+    <!--<Button-->
+    <!--android:id="@+id/feedbackBtn"-->
+    <!--android:layout_width="wrap_content"-->
+    <!--android:layout_height="wrap_content"-->
+    <!--android:layout_marginEnd="8dp"-->
+    <!--android:layout_marginStart="8dp"-->
+    <!--android:layout_marginTop="@dimen/mid_size_margin"-->
+    <!--android:text="@string/feedback"-->
+    <!--app:layout_constraintEnd_toEndOf="parent"-->
+    <!--app:layout_constraintStart_toStartOf="parent"-->
+    <!--app:layout_constraintTop_toBottomOf="@+id/highscoreBtn" />-->
+
+    <!--<Button-->
+    <!--android:id="@+id/aboutBtn"-->
+    <!--android:layout_width="wrap_content"-->
+    <!--android:layout_height="wrap_content"-->
+    <!--android:layout_marginEnd="8dp"-->
+    <!--android:layout_marginStart="8dp"-->
+    <!--android:layout_marginTop="@dimen/mid_size_margin"-->
+    <!--android:text="@string/about"-->
+    <!--app:layout_constraintEnd_toEndOf="parent"-->
+    <!--app:layout_constraintStart_toStartOf="parent"-->
+    <!--app:layout_constraintTop_toBottomOf="@+id/feedbackBtn" />-->
     <TextView
         android:id="@+id/welcome_textview"
-        android:layout_width="wrap_content"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/mid_size_margin"
+        android:layout_marginTop="16dp"
+        android:layout_marginEnd="8dp"
+        android:background="@color/colorPrimary"
+        android:backgroundTint="#ceceba"
+        android:backgroundTintMode="multiply"
+        android:padding="@dimen/text_padding"
         android:text="@string/userProfile"
-        android:textSize="@dimen/title_case"
+        android:textAlignment="center"
+        android:textColor="@color/common_google_signin_btn_text_dark_default"
+        android:textSize="@dimen/intro_case"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <Button
-        android:id="@+id/nrButton"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+    <FrameLayout
+        android:id="@+id/nurse_avatar"
+        android:layout_width="@dimen/avatar_size"
+        android:layout_height="@dimen/avatar_size"
+        android:layout_marginTop="20dp"
         android:layout_marginEnd="8dp"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="@android:dimen/app_icon_size"
-        android:text="@string/nurse_room"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/welcome_textview" />
+        app:layout_constraintTop_toBottomOf="@+id/welcome_textview">
 
-    <Button
-        android:id="@+id/highscoreBtn"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginEnd="8dp"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="@dimen/mid_size_margin"
-        android:text="@string/highscore"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/nrButton" />
+        <TextView
+            android:id="@+id/name_avatar_textview"
+            android:layout_width="@dimen/avatar_size"
+            android:layout_height="@dimen/avatar_size"
+            android:background="@drawable/circle"
+            android:gravity="center"
+            android:textColor="@color/colorPrimary"
+            android:textSize="40sp" />
 
-    <Button
-        android:id="@+id/feedbackBtn"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginEnd="8dp"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="@dimen/mid_size_margin"
-        android:text="@string/feedback"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/highscoreBtn" />
+        <de.hdodenhof.circleimageview.CircleImageView xmlns:app="http://schemas.android.com/apk/res-auto"
+            android:id="@+id/profile_image"
+            android:layout_width="@dimen/avatar_size"
+            android:layout_height="@dimen/avatar_size"
+            app:civ_border_color="#FF000000"
+            app:civ_border_width="2dp" />
+    </FrameLayout>
 
-    <Button
-        android:id="@+id/aboutBtn"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginEnd="8dp"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="@dimen/mid_size_margin"
-        android:text="@string/about"
-        app:layout_constraintEnd_toEndOf="parent"
+    <android.support.v7.widget.CardView
+        android:id="@+id/cardView"
+        android:layout_width="@dimen/action_btn"
+        android:layout_height="@dimen/action_btn"
+        android:layout_marginStart="60dp"
+        android:layout_marginTop="40dp"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/feedbackBtn" />
+        app:layout_constraintTop_toBottomOf="@+id/nurse_avatar">
+
+        <Button
+            android:id="@+id/studyBtn"
+            android:layout_width="@dimen/action_btn"
+            android:layout_height="110dp"
+            android:background="@drawable/common_full_open_on_phone"
+            android:drawableTop="@mipmap/study_icon_large"
+            android:paddingTop="@dimen/btn_padding_top"
+            android:text="@string/Studies"
+            android:textColor="@color/colorPrimary" />
+    </android.support.v7.widget.CardView>
+
+    <android.support.v7.widget.CardView
+        android:id="@+id/cardView2"
+        android:layout_width="@dimen/action_btn"
+        android:layout_height="@dimen/action_btn"
+        android:layout_marginTop="40dp"
+        android:layout_marginEnd="60dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/nurse_avatar">
+
+        <Button
+            android:id="@+id/button7"
+            android:layout_width="@dimen/action_btn"
+            android:layout_height="@dimen/action_btn"
+            android:background="@drawable/common_full_open_on_phone"
+            android:drawableTop="@mipmap/score_card_icon"
+            android:paddingTop="@dimen/btn_padding_top"
+            android:text="@string/Highscore"
+            android:textColor="@color/colorPrimary" />
+    </android.support.v7.widget.CardView>
+
+    <android.support.v7.widget.CardView
+        android:layout_width="@dimen/action_btn"
+        android:layout_height="@dimen/action_btn"
+        android:layout_marginStart="60dp"
+        android:layout_marginTop="20dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/cardView">
+
+        <Button
+            android:id="@+id/fback_btn"
+            android:layout_width="@dimen/action_btn"
+            android:layout_height="@dimen/action_btn"
+            android:background="@drawable/common_full_open_on_phone"
+            android:clickable="false"
+            android:drawableTop="@mipmap/feedback_96"
+            android:paddingTop="@dimen/btn_padding_top"
+            android:text="@string/Feedback"
+            android:textColor="@color/colorPrimary" />
+    </android.support.v7.widget.CardView>
+
+    <android.support.v7.widget.CardView
+        android:layout_width="@dimen/action_btn"
+        android:layout_height="@dimen/action_btn"
+        android:layout_marginTop="20dp"
+        android:layout_marginEnd="60dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/cardView2">
+
+        <Button
+            android:id="@+id/aboutBtn"
+            android:layout_width="@dimen/action_btn"
+            android:layout_height="@dimen/action_btn"
+            android:background="@drawable/common_full_open_on_phone"
+            android:drawableTop="@mipmap/person_female_96"
+            android:paddingTop="@dimen/btn_padding_top"
+            android:text="@string/About"
+            android:textColor="@color/colorPrimary" />
+    </android.support.v7.widget.CardView>
+
 </android.support.constraint.ConstraintLayout>
+    <!--android:src="@drawable/profile"-->
