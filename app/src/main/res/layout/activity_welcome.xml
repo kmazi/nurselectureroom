@@ -4,8 +4,6 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:paddingStart="@dimen/container_padding"
-    android:paddingEnd="@dimen/container_padding"
     android:paddingBottom="@dimen/container_padding"
     tools:context=".WelcomeActivity">
 
@@ -71,15 +69,12 @@
         android:id="@+id/welcome_textview"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
-        android:layout_marginEnd="8dp"
-        android:background="@color/colorPrimary"
-        android:backgroundTint="#ceceba"
-        android:backgroundTintMode="multiply"
-        android:padding="@dimen/text_padding"
+        android:background="@color/title_bkg"
+        android:paddingTop="10dp"
+        android:paddingBottom="10dp"
         android:text="@string/userProfile"
         android:textAlignment="center"
-        android:textColor="@color/common_google_signin_btn_text_dark_default"
+        android:textColor="@color/browser_actions_bg_grey"
         android:textSize="@dimen/intro_case"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -101,7 +96,7 @@
             android:layout_height="@dimen/avatar_size"
             android:background="@drawable/circle"
             android:gravity="center"
-            android:textColor="@color/colorPrimary"
+            android:textColor="@color/browser_actions_bg_grey"
             android:textSize="40sp" />
 
         <de.hdodenhof.circleimageview.CircleImageView xmlns:app="http://schemas.android.com/apk/res-auto"

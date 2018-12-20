@@ -9,7 +9,6 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
-import com.google.firebase.firestore.FieldValue;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
@@ -26,7 +25,7 @@ public class FireStoreUtil {
     private final String LECTURE_SECTIONS = "Sections";
     private final String LECTURES = "lectures";
 
-    private static ArrayList<Section> sections = new ArrayList<>();
+    private ArrayList<Section> sections = new ArrayList<>();
     private Section section = new Section();
     private Lecture singleLecture = new Lecture();
 
@@ -59,14 +58,6 @@ public class FireStoreUtil {
                 .addOnFailureListener(failAction);
     }
 
-
-    // Get all lecture sections
-    public ArrayList<Section> getSections() {
-
-        // populate the sections field with data from fire base
-        getLectureSections();
-        return sections;
-    }
 
     // Get a specific section
     public Section getSection(String id) {
@@ -136,25 +127,9 @@ public class FireStoreUtil {
 
 
     // populate the sections field with section data
-    public void getLectureSections() {
+    public void getLectureSections(OnCompleteListener<QuerySnapshot> successListener) {
 
-        lectureSections.get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-            @Override
-            public void onComplete(@NonNull Task<QuerySnapshot> task) {
-
-                if (task.isSuccessful()) {
-
-                    for (QueryDocumentSnapshot document : task.getResult()) {
-
-                        sections.add(document.toObject(Section.class));
-                    }
-
-                } else {
-
-                    // do something if it fails
-                }
-            }
-        });
+        lectureSections.get().addOnCompleteListener(successListener);
     }
 
 

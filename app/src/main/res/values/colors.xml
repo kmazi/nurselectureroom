@@ -7,4 +7,5 @@
     <color name="btnColor">#d3d4db</color>
     <color name="btnColor1">#edf5ed</color>
     <color name="nurseGreen">#eeabfeaf</color>
+    <color name="title_bkg">#ff820d</color>
 </resources>

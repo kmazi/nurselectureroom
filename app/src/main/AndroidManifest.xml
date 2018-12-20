@@ -21,7 +21,8 @@
         <activity android:name=".NurseRoomActivity" />
         <activity android:name=".FeedbackActivity" />
         <activity android:name=".HighScoreActivity" />
-        <activity android:name=".AboutActivity"></activity>
+        <activity android:name=".AboutActivity" />
+        <activity android:name=".LectureContentActivity"></activity>
     </application>
 
 </manifest>
