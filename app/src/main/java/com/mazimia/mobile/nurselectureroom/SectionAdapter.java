@@ -1,22 +1,27 @@
 package com.mazimia.mobile.nurselectureroom;
 
 import android.support.annotation.NonNull;
-import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
 import java.util.ArrayList;
-import java.util.zip.Inflater;
 
-class SectionAdapter extends RecyclerView.Adapter<SectionAdapter.SectionAdapterViewHolder> {
+class SectionAdapter extends CustomRecyclerView.Adapter<SectionAdapter.SectionAdapterViewHolder> {
+
+    private ArrayList<Section> sections;
+    private ViewHolderClickListener listener;
 
     public SectionAdapter() {
 
     }
 
-    public ArrayList<Section> getSection() {
+    public SectionAdapter(ViewHolderClickListener listener) {
+        this.listener = listener;
+    }
+
+    public ArrayList<Section> getSections() {
         return sections;
     }
 
@@ -25,18 +30,31 @@ class SectionAdapter extends RecyclerView.Adapter<SectionAdapter.SectionAdapterV
         notifyDataSetChanged();
     }
 
-    private ArrayList<Section> sections;
 
-
-    public class SectionAdapterViewHolder extends RecyclerView.ViewHolder {
+    public class SectionAdapterViewHolder extends CustomRecyclerView.ViewHolder
+        implements View.OnClickListener{
 
         public TextView sectionTitle;
         public TextView sectionDesc;
+        private ViewHolderClickListener sectionClickListener;
 
-        public SectionAdapterViewHolder (View view) {
+//        public SectionAdapterViewHolder (View view) {
+//            super(view);
+//            sectionTitle = view.findViewById(R.id.section_title_txtview);
+//            sectionDesc = view.findViewById(R.id.section_desc_txtview);
+//        }
+
+        public SectionAdapterViewHolder (View view, ViewHolderClickListener listener) {
             super(view);
             sectionTitle = view.findViewById(R.id.section_title_txtview);
             sectionDesc = view.findViewById(R.id.section_desc_txtview);
+            sectionClickListener = listener;
+            view.setOnClickListener(this);
+        }
+
+        @Override
+        public void onClick(View view) {
+            sectionClickListener.onClick(view, getAdapterPosition());
         }
     }
 
@@ -46,7 +64,7 @@ class SectionAdapter extends RecyclerView.Adapter<SectionAdapter.SectionAdapterV
         LayoutInflater inflater = LayoutInflater.from(parent.getContext());
         int sectionListLayoutId = R.layout.section_listview_item;
         View view = inflater.inflate(sectionListLayoutId, parent, false);
-        return new SectionAdapterViewHolder(view);
+        return new SectionAdapterViewHolder(view, listener);
     }
 
     @Override
@@ -54,6 +72,7 @@ class SectionAdapter extends RecyclerView.Adapter<SectionAdapter.SectionAdapterV
         Section section = sections.get(position);
         holder.sectionTitle.setText(section.getTitle());
         holder.sectionDesc.setText(section.getSummary());
+        holder.itemView.setLongClickable(true);
     }
 
     @Override

@@ -35,14 +35,30 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <android.support.v7.widget.RecyclerView
+    <com.mazimia.mobile.nurselectureroom.CustomRecyclerView
         android:id="@+id/sections_recycler_view"
-        android:layout_width="368dp"
-        android:layout_height="431dp"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
         android:layout_marginTop="8dp"
+        android:layout_marginBottom="8dp"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView5" >
+        app:layout_constraintTop_toBottomOf="@+id/textView5"
+        app:layout_constraintVertical_bias="0.01999998">
 
-    </android.support.v7.widget.RecyclerView>
+    </com.mazimia.mobile.nurselectureroom.CustomRecyclerView>
+
+    <android.support.design.widget.FloatingActionButton
+        android:id="@+id/addSectionBtn"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="16dp"
+        android:layout_marginBottom="16dp"
+        android:background="@color/title_bkg"
+        android:clickable="true"
+        app:backgroundTint="@color/title_bkg"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:srcCompat="@mipmap/plus" />
 </android.support.constraint.ConstraintLayout>

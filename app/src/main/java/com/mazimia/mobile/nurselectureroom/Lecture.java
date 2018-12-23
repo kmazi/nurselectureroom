@@ -33,7 +33,6 @@ class Lecture {
         this.topic = topic;
         this.description = description;
         this.note = "";
-        this.lecture = new HashMap<>();
     }
 
     public Lecture (String topic, String description, String note) {
@@ -41,7 +40,6 @@ class Lecture {
         this.topic = topic;
         this.description = description;
         this.note = note;
-        this.lecture = new HashMap<>();
     }
 
     public String getSectionId() {
@@ -88,36 +86,30 @@ class Lecture {
     }
 
 
-    // Get the lectures
-    public Map<String, Object> getLecture() {
-        return lecture;
-    }
-
-
     // create the lecture for a section
     public Map<String, Object> updateLectureData() {
 
         Map<String, Object> lecture = new HashMap<>();
-        if (this.topic != "" && this.topic != null) {
+        if (!this.topic.equals("") && !this.topic.equals(null)) {
             lecture.put(TOPIC, getTopic());
         }
 
-        if (this.description != "" && this.description != null) {
+        if (!this.description.equals("") && !this.description.equals(null)) {
 
             lecture.put(DESCRIPTION, getDescription());
         }
 
-        if (this.note != "" && this.note != null) {
+        if (!this.note.equals("") && !this.note.equals(null)) {
 
             lecture.put(NOTE, getNote());
         }
 
-        if (this.sectionId != "" && this.sectionId != null) {
+        if (!this.sectionId.equals("") && !this.sectionId.equals(null)) {
 
             lecture.put(SECTION_ID, getSectionId());
         }
 
-        if (this.id != "" && this.id != null) {
+        if (!this.id.equals("") && !this.id.equals(null)) {
 
             lecture.put(ID, getId());
         }

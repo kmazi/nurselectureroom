@@ -6,6 +6,9 @@
     <string name="nurse_room">Nurse Room</string>
     <string name="highscore">Highscore</string>
     <string name="feedback">Feedback</string>
+    <string name="lecture">Lecture</string>
+    <string name="objective">Objective</string>
+    <string name="theory">Theory</string>
     <string name="about">About</string>
     <string name="add_section">Add section</string>
     <string name="add_lecture">Add lecture</string>
@@ -25,4 +28,7 @@
 
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="edit_section">Edit Section</string>
+    <string name="delete_section">Delete section</string>
+    <string name="create_lec">Create Lecture</string>
 </resources>

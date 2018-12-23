@@ -10,4 +10,5 @@
     <dimen name="avatar_radius">60dp</dimen>
     <dimen name="action_btn">110dp</dimen>
     <dimen name="btn_padding_top">20dp</dimen>
+    <dimen name="title_pad">10dp</dimen>
 </resources>

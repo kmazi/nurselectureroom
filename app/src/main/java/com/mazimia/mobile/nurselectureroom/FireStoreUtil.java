@@ -14,6 +14,7 @@ import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 
 import java.util.ArrayList;
+import java.util.List;
 
 // A utility class for interfacing with Firestore database
 public class FireStoreUtil {
@@ -68,40 +69,34 @@ public class FireStoreUtil {
 
 
     // Update a lecture section
-    public void updateSection(Section sec) {
+    public void updateSection(Section sec, OnSuccessListener<Void> success,
+                              OnFailureListener failure) {
 
         lectureSections.document(sec.getId()).update(sec.updateSectionData())
-                .addOnSuccessListener(new OnSuccessListener<Void>() {
-                    @Override
-                    public void onSuccess(Void aVoid) {
-                        // do something when successful
-                    }
-                })
-        .addOnFailureListener(new OnFailureListener() {
-            @Override
-            public void onFailure(@NonNull Exception e) {
-                // do something when it fails.
-            }
-        });
+                .addOnSuccessListener(success)
+        .addOnFailureListener(failure);
 
     }
 
     // Deletes a lecture section
-    public void deleteSection(String secId) {
-
-        lectureSections.document(secId).delete()
-                .addOnCompleteListener(new OnCompleteListener<Void>() {
+    public void deleteSection(final String secId, final OnCompleteListener<Void> success,
+                              final OnFailureListener failure) {
+        lectures.whereEqualTo(Lecture.SECTION_ID, secId).get()
+                .addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
                     @Override
-                    public void onComplete(@NonNull Task<Void> task) {
-                        // do something when its successful
+                    public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
+                        // Delete all documents in a section first before deleting the section
+                        List<DocumentSnapshot> docs = queryDocumentSnapshots.getDocuments();
+                        for (DocumentSnapshot doc : docs) {
+                            doc.getReference().delete();
+                        }
+
+                        lectureSections.document(secId).delete()
+                                .addOnCompleteListener(success)
+                                .addOnFailureListener(failure);
                     }
                 })
-                .addOnFailureListener(new OnFailureListener() {
-                    @Override
-                    public void onFailure(@NonNull Exception e) {
-                        // do something when it fails.
-                    }
-                });
+                .addOnFailureListener(failure);
 
     }
 
@@ -134,7 +129,9 @@ public class FireStoreUtil {
 
 
     // Creates lecture for a section
-    public void createLecture(final Lecture lecture) {
+    public void createLecture(final Lecture lecture,
+                              final OnSuccessListener<DocumentReference> success,
+                              final OnFailureListener failure) {
 
         lectureSections.document(lecture.getSectionId()).get()
                 .addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
@@ -143,25 +140,8 @@ public class FireStoreUtil {
                 if (documentSnapshot.exists()) {
 
                     lectures.add(lecture)
-                            .addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
-                                @Override
-                                public void onSuccess(DocumentReference documentReference) {
-                                    String lectureRef = documentReference.getId();
-                                    documentReference.update(Lecture.ID, lectureRef)
-                                            .addOnCompleteListener(new OnCompleteListener<Void>() {
-                                                @Override
-                                                public void onComplete(@NonNull Task<Void> task) {
-                                                    // update the user on successful doc creation
-                                                }
-                                            });
-                                }
-                            })
-                            .addOnFailureListener(new OnFailureListener() {
-                                @Override
-                                public void onFailure(@NonNull Exception e) {
-                                    // do something when doc creation fails.
-                                }
-                            });
+                            .addOnSuccessListener(success)
+                            .addOnFailureListener(failure);
                 } else {
 
                     // do something if the section don't exist
@@ -173,11 +153,11 @@ public class FireStoreUtil {
 
 
     //get all lectures for a section
-    public ArrayList<Lecture> getLectures(Lecture lecture) {
+    public ArrayList<Lecture> getLectures(String sectionId) {
 
         final ArrayList<Lecture> secLectures = new ArrayList<Lecture>();
 
-        lectures.whereEqualTo(Lecture.SECTION_ID, lecture.getSectionId())
+        lectures.whereEqualTo(Lecture.SECTION_ID, sectionId)
                 .get().addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
             @Override
             public void onSuccess(QuerySnapshot queryDocumentSnapshots) {

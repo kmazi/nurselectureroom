@@ -100,16 +100,16 @@ class Section {
     public Map<String, Object> updateSectionData() {
 
         Map<String, Object> section = new HashMap<>();
-        if (this.title != "" && this.title != null) {
+        if (!this.title.equals("") && !this.title.equals(null)) {
             section.put(TITLE, getTitle());
         }
 
-        if (this.summary != "" && this.summary != null) {
+        if (!this.summary.equals("") && !this.summary.equals(null)) {
 
             section.put(SUMMARY, getSummary());
         }
 
-        if (this.thumbnail != "" && this.thumbnail != null) {
+        if (!this.thumbnail.equals("") && !this.thumbnail.equals(null)) {
 
             section.put(THUMBNAIL, getThumbnail());
         }
