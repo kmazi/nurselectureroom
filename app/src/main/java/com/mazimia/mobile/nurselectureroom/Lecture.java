@@ -17,8 +17,8 @@ class Lecture {
     private Map<String, Object> lecture;
 
     public final String CREATED_AT = "timestamp";
-    public final static String TOPIC = "title";
-    public final static String DESCRIPTION = "summary";
+    public final static String TOPIC = "topic";
+    public final static String DESCRIPTION = "description";
     public final static String NOTE = "note";
     public final static String ID = "id";
     public final static String SECTION_ID = "sectionId";
@@ -27,6 +27,7 @@ class Lecture {
     public Lecture() {
 
     }
+
 
     public Lecture (String topic, String description) {
 
@@ -90,29 +91,20 @@ class Lecture {
     public Map<String, Object> updateLectureData() {
 
         Map<String, Object> lecture = new HashMap<>();
-        if (!this.topic.equals("") && !this.topic.equals(null)) {
+        if (!this.topic.equals("") && this.topic != null) {
             lecture.put(TOPIC, getTopic());
         }
 
-        if (!this.description.equals("") && !this.description.equals(null)) {
+        if (!this.description.equals("") && this.description != null) {
 
             lecture.put(DESCRIPTION, getDescription());
         }
 
-        if (!this.note.equals("") && !this.note.equals(null)) {
+        if (!this.note.equals("") && this.note != null) {
 
             lecture.put(NOTE, getNote());
         }
 
-        if (!this.sectionId.equals("") && !this.sectionId.equals(null)) {
-
-            lecture.put(SECTION_ID, getSectionId());
-        }
-
-        if (!this.id.equals("") && !this.id.equals(null)) {
-
-            lecture.put(ID, getId());
-        }
         lecture.put(CREATED_AT, Calendar.getInstance().getTime());
         return lecture;
     }

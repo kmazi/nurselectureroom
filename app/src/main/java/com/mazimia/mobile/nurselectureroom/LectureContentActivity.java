@@ -1,6 +1,7 @@
 package com.mazimia.mobile.nurselectureroom;
 
 import android.graphics.drawable.GradientDrawable;
+import android.os.Parcelable;
 import android.support.design.widget.TabLayout;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
@@ -33,14 +34,45 @@ public class LectureContentActivity extends AppCompatActivity {
             ((LinearLayout) root).setDividerPadding(10);
             ((LinearLayout) root).setDividerDrawable(drawable);
         }
+
+        // Add viewpager to tab layout
         tabs.setupWithViewPager(viewPager);
+        //tabs.getTabAt(0).setIcon(R.drawable.study_icon);
     }
 
     private void setUpViewPager(ViewPager viewPager) {
         ViewPagerAdapter adapter = new ViewPagerAdapter(getSupportFragmentManager());
-        adapter.addFragment(new LectureFragment(), "Lecture");
-        adapter.addFragment(new ObjectiveFragment(), "Objective");
-        adapter.addFragment(new TheoryFragment(), "Theory");
+
+        // Fragments
+        LectureFragment lec = new LectureFragment();
+        ObjectiveFragment obj = new ObjectiveFragment();
+        TheoryFragment theory = new TheoryFragment();
+
+        // Get objects from previous activity via intent
+        String lectureTitle = getIntent().getStringExtra("lecTitle");
+        String lecNote = getIntent().getStringExtra("lecNote");
+
+        // get objects from previous activity into the fragments
+        Bundle lectureBundle = new Bundle();
+        Bundle objBundle = new Bundle();
+        Bundle theoryBundle = new Bundle();
+
+        // pub objects into the bundles for the fragments
+        lectureBundle.putString("lecTitle", lectureTitle);
+        lectureBundle.putString("lecNote", lecNote);
+
+//        objBundle.putParcelable("objective", objectives);
+//        theoryBundle.putParcelable("theory", theories);
+
+        // Attach the bundles to the fragments
+        lec.setArguments(lectureBundle);
+        obj.setArguments(objBundle);
+        theory.setArguments(theoryBundle);
+
+        // Add fragments to the adapter
+        adapter.addFragment(lec, "Lecture");
+        adapter.addFragment(obj, "Objective");
+        adapter.addFragment(theory, "Theory");
         viewPager.setAdapter(adapter);
     }
 }

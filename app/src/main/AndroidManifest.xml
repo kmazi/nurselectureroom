@@ -23,7 +23,8 @@
         <activity android:name=".HighScoreActivity" />
         <activity android:name=".AboutActivity" />
         <activity android:name=".LectureContentActivity" />
-        <activity android:name=".CreateActivity"></activity>
+        <activity android:name=".CreateActivity" />
+        <activity android:name=".LectureListActivity"></activity>
     </application>
 
 </manifest>

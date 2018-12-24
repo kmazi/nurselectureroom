@@ -31,4 +31,6 @@
     <string name="edit_section">Edit Section</string>
     <string name="delete_section">Delete section</string>
     <string name="create_lec">Create Lecture</string>
+    <string name="delete_lecture">Delete Lecture</string>
+    <string name="edit_lecture">Edit Lecture</string>
 </resources>

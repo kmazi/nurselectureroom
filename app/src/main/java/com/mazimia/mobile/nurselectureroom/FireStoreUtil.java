@@ -153,22 +153,11 @@ public class FireStoreUtil {
 
 
     //get all lectures for a section
-    public ArrayList<Lecture> getLectures(String sectionId) {
-
-        final ArrayList<Lecture> secLectures = new ArrayList<Lecture>();
+    public void getLectures(String sectionId, OnSuccessListener<QuerySnapshot> success,
+                            OnFailureListener failure) {
 
         lectures.whereEqualTo(Lecture.SECTION_ID, sectionId)
-                .get().addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
-            @Override
-            public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
-
-                for (Lecture lecture : queryDocumentSnapshots.toObjects(Lecture.class)) {
-
-                    secLectures.add(lecture);
-                }
-            }
-        });
-        return secLectures;
+                .get().addOnSuccessListener(success).addOnFailureListener(failure);
     }
 
 
@@ -189,50 +178,24 @@ public class FireStoreUtil {
 
 
     // Updates a lecture
-    public void updateLecture(Lecture lecture) {
+    public void updateLecture(Lecture lecture, OnSuccessListener success,
+                              OnFailureListener failure) {
 
         lectures.document(lecture.getId())
                 .update(lecture.updateLectureData())
-                .addOnSuccessListener(new OnSuccessListener<Void>() {
-                    @Override
-                    public void onSuccess(Void aVoid) {
-
-                    }
-                })
-                .addOnFailureListener(new OnFailureListener() {
-
-                    @Override
-                    public void onFailure(@NonNull Exception e) {
-
-                        // do something on failure
-
-                    }
-
-                });
+                .addOnSuccessListener(success)
+                .addOnFailureListener(failure);
     }
 
 
     // Delete a lecture
-    public void deleteLecture(Lecture lecture) {
+    public void deleteLecture(String lecId, OnSuccessListener<Void> success,
+                              OnFailureListener failure) {
 
-        lectureSections.document(lecture.getId())
+        lectureSections.document(lecId)
                 .delete()
-                .addOnSuccessListener(new OnSuccessListener<Void>() {
-                    @Override
-                    public void onSuccess(Void aVoid) {
-                        // Notify user that delete operation was successful
-                    }
-                })
-                .addOnFailureListener(new OnFailureListener() {
-
-                    @Override
-                    public void onFailure(@NonNull Exception e) {
-
-                        // do something on failure
-
-                    }
-
-                });
+                .addOnSuccessListener(success)
+                .addOnFailureListener(failure);
 
     }
 

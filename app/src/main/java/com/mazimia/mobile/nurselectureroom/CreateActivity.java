@@ -43,16 +43,16 @@ public class CreateActivity extends AppCompatActivity {
 
         // Know whether to create a section or a lecture from intent extra
         final String action = getIntent().getStringExtra("isCreate");
-        final String sectionId = getIntent().getStringExtra("sectionId");
-        final String sectionTitle = getIntent().getStringExtra("section_title");
-        final String sectionSummary = getIntent().getStringExtra("section_summary");
+        final String id = getIntent().getStringExtra("id");
+        final String title = getIntent().getStringExtra("title");
+        final String summary = getIntent().getStringExtra("summary");
         final boolean isEdit = getIntent().getBooleanExtra("isEdit", false);
 
         // Check to see if the user intend to edit an existing section
-        if (isEdit && !sectionTitle.equals("") && !sectionSummary.equals("")) {
+        if (isEdit && !title.equals("") && !summary.equals("")) {
             createBtn.setText("Edit");
-            title.setText(sectionTitle);
-            summary.setText(sectionSummary);
+            this.title.setText(title);
+            this.summary.setText(summary);
         }
 
         if(action.equals("lecture")) {
@@ -73,9 +73,9 @@ public class CreateActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 FireStoreUtil storeUtil = new FireStoreUtil(FirebaseFirestore.getInstance());
-                String getTitle = title.getText().toString();
+                String getTitle = CreateActivity.this.title.getText().toString();
                 String getNote = note.getText().toString();
-                String getSummary = summary.getText().toString();
+                String getSummary = CreateActivity.this.summary.getText().toString();
 
                 if (action.equals("section") && !getTitle.equals("") && !getSummary.equals("")) {
 
@@ -83,7 +83,7 @@ public class CreateActivity extends AppCompatActivity {
                     if (isEdit) {
 
                         Section section = new Section(getTitle, getSummary);
-                        section.setId(sectionId);
+                        section.setId(id);
 
                         // Successfully updated a section
                         OnSuccessListener<Void> success = new OnSuccessListener<Void>() {
@@ -142,32 +142,79 @@ public class CreateActivity extends AppCompatActivity {
                 else if (action.equals("lecture") && !getTitle.equals("")
                         && !getSummary.equals("") && !getNote.equals("")) {
 
-                    Lecture lecture = new Lecture(getTitle, getSummary, getNote);
-                    lecture.setSectionId(sectionId);
+                    if (isEdit) {
 
-                    // handles success in creation of lecture
-                    OnSuccessListener success = new OnSuccessListener<DocumentReference>() {
-                        @Override
-                        public void onSuccess(DocumentReference o) {
-                            Toast.makeText(CreateActivity.this,
-                                    "Successfully created a lecture!",
-                                    Toast.LENGTH_LONG).show();
-                        }
-                    };
+                        Lecture lecture = new Lecture(getTitle, getSummary, getNote);
+                        lecture.setId(id);
 
-                    // on failure
-                    OnFailureListener failure = new OnFailureListener() {
-                        @Override
-                        public void onFailure(@NonNull Exception e) {
-                            // do something when doc creation fails.
-                            Toast.makeText(CreateActivity.this,
-                                    "Could not create a lecture! Check your internet connection",
-                                    Toast.LENGTH_LONG).show();
-                        }
-                    };
+                        OnSuccessListener success = new OnSuccessListener<Void>() {
+                            @Override
+                            public void onSuccess(Void aVoid) {
+                                Toast.makeText(CreateActivity.this,
+                                        "Successfully updated the lecture!",
+                                        Toast.LENGTH_LONG).show();
+                                clearText();
+                            }
+                        };
 
-                    // Create a new lecture
-                    storeUtil.createLecture(lecture, success, failure);
+                        OnFailureListener failure = new OnFailureListener() {
+                            @Override
+                            public void onFailure(@NonNull Exception e) {
+                                Toast.makeText(CreateActivity.this,
+                                        "Unable to edit lecture. Please try again",
+                                        Toast.LENGTH_LONG).show();
+                            }
+                        };
+                        // update a lecture
+                        storeUtil.updateLecture(lecture, success, failure);
+
+                    } else {
+
+                        Lecture lecture = new Lecture(getTitle, getSummary, getNote);
+                        lecture.setSectionId(id);
+
+                        // handles success in creation of lecture
+                        OnSuccessListener success = new OnSuccessListener<DocumentReference>() {
+                            @Override
+                            public void onSuccess(DocumentReference o) {
+
+                                o.update(Lecture.ID, o.getId())
+                                        .addOnSuccessListener(new OnSuccessListener<Void>() {
+                                            @Override
+                                            public void onSuccess(Void aVoid) {
+                                                Toast.makeText(CreateActivity.this,
+                                                        "Successfully created a lecture!",
+                                                        Toast.LENGTH_LONG).show();
+                                                clearText();
+                                            }
+                                        }).addOnFailureListener(new OnFailureListener() {
+                                    @Override
+                                    public void onFailure(@NonNull Exception e) {
+                                        Toast.makeText(CreateActivity.this,
+                                                "Could not update id of created lecture",
+                                                Toast.LENGTH_LONG).show();
+                                    }
+                                });
+
+                            }
+                        };
+
+                        // on failure
+                        OnFailureListener failure = new OnFailureListener() {
+                            @Override
+                            public void onFailure(@NonNull Exception e) {
+                                // do something when doc creation fails.
+                                Toast.makeText(CreateActivity.this,
+                                        "Could not create a lecture! Check your internet connection",
+                                        Toast.LENGTH_LONG).show();
+                            }
+                        };
+
+                        // Create a new lecture
+                        storeUtil.createLecture(lecture, success, failure);
+                    }
+
+
                 } else {
                     Toast.makeText(CreateActivity.this,
                             "Give a title, summary or note before submitting",

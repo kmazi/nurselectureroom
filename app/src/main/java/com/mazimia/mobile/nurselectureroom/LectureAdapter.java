@@ -7,24 +7,28 @@ import android.view.ViewGroup;
 
 import java.util.ArrayList;
 
-class SectionAdapter extends CustomBaseAdapter {
+public class LectureAdapter extends CustomBaseAdapter {
 
-    private ArrayList<Section> sections = new ArrayList<>();
     private ViewHolderClickListener listener;
+    private ArrayList<Lecture> lectures = new ArrayList<>();
 
 
-    public SectionAdapter(ViewHolderClickListener listener) {
+    public LectureAdapter(ViewHolderClickListener listener) {
         this.listener = listener;
     }
 
-    public ArrayList<Section> getSections() {
-        return sections;
+    public void setLectures(ArrayList<Lecture> lectures) {
+        this.lectures.clear();
+        this.lectures.addAll(lectures);
+        notifyDataSetChanged();
     }
 
-    public void setSection(ArrayList<Section> sections) {
-        this.sections.clear();
-        this.sections.addAll(sections);
-        notifyDataSetChanged();
+    public Lecture getLecture(int position) {
+        return lectures.get(position);
+    }
+
+    public ArrayList<Lecture> getLectures() {
+        return this.lectures;
     }
 
     @NonNull
@@ -38,18 +42,17 @@ class SectionAdapter extends CustomBaseAdapter {
 
     @Override
     public void onBindViewHolder(@NonNull CustomBaseAdapterViewHolder holder, int position) {
-            Section section = sections.get(position);
-            holder.sectionTitle.setText(section.getTitle());
-            holder.sectionDesc.setText(section.getSummary());
-            holder.itemView.setLongClickable(true);
-
+        Lecture lecture = lectures.get(position);
+        holder.sectionTitle.setText(lecture.getTopic());
+        holder.sectionDesc.setText(lecture.getDescription());
+        holder.itemView.setLongClickable(true);
     }
 
     @Override
     public int getItemCount() {
-        if (sections == null) {
+        if (lectures == null) {
             return 0;
         }
-        return sections.size();
+        return lectures.size();
     }
 }

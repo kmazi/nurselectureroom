@@ -1,12 +1,12 @@
 package com.mazimia.mobile.nurselectureroom;
 
+import android.content.DialogInterface;
 import android.content.Intent;
-import android.os.Parcelable;
 import android.support.annotation.NonNull;
 import android.support.design.widget.FloatingActionButton;
 import android.os.Bundle;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
 import android.view.ContextMenu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -26,11 +26,12 @@ import java.util.ArrayList;
 
 public class NurseRoomActivity extends SignOutActivity {
 
-    private RecyclerView sectionView;
+    private CustomRecyclerView sectionView;
     private SectionAdapter sectionAdapter;
     private ProgressBar progress;
     private ViewHolderClickListener sectionClickListener;
     private FloatingActionButton createSectionBtn;
+    private FloatingActionButton refreshButton;
     FireStoreUtil storeUtil;
 
     @Override
@@ -44,12 +45,14 @@ public class NurseRoomActivity extends SignOutActivity {
         progress = findViewById(R.id.progressBar2);
         progress.setVisibility(View.VISIBLE);
         createSectionBtn = findViewById(R.id.addSectionBtn);
+        refreshButton = findViewById(R.id.refreshFoatBtn);
 
         // Fires when the section float button is clicked
         createSectionBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(NurseRoomActivity.this, CreateActivity.class);
+                Intent intent = new Intent(NurseRoomActivity.this,
+                        CreateActivity.class);
                 intent.putExtra("isCreate", "section");
                 startActivity(intent);
             }
@@ -57,14 +60,18 @@ public class NurseRoomActivity extends SignOutActivity {
 
 
         LinearLayoutManager listManager
-                = new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false);
+                = new LinearLayoutManager(this, LinearLayoutManager.VERTICAL,
+                false);
         sectionView.setLayoutManager(listManager);
 
         // Set onclick listener for every list item when viewing sections
         sectionClickListener = new ViewHolderClickListener() {
             @Override
             public void onClick(View view, int position) {
-                Intent lectureIntent = new Intent(NurseRoomActivity.this, LectureContentActivity.class);
+                Intent lectureIntent = new Intent(NurseRoomActivity.this,
+                        LectureListActivity.class);
+                String sectionId = sectionAdapter.getSections().get(position).getId();
+                lectureIntent.putExtra("sectionId", sectionId);
                 startActivity(lectureIntent);
             }
         };
@@ -75,6 +82,15 @@ public class NurseRoomActivity extends SignOutActivity {
         sectionAdapter = new SectionAdapter(sectionClickListener);
         sectionView.setAdapter(sectionAdapter);
         storeUtil = new FireStoreUtil(FirebaseFirestore.getInstance());
+
+        //Fires when the refresh button is clicked
+        refreshButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                storeUtil.getLectureSections(loadSectionsListener());
+                refreshButton.setVisibility(View.GONE);
+            }
+        });
 
         storeUtil.getLectureSections(loadSectionsListener());
 
@@ -98,6 +114,7 @@ public class NurseRoomActivity extends SignOutActivity {
                 } else {
 
                     // do something if it fails
+                    progress.setVisibility(View.GONE);
                     Toast.makeText(NurseRoomActivity.this, "Unable to load sections",
                             Toast.LENGTH_LONG);
                 }
@@ -120,7 +137,7 @@ public class NurseRoomActivity extends SignOutActivity {
     @Override
     protected void onRestart() {
         super.onRestart();
-        storeUtil.getLectureSections(loadSectionsListener());
+        refreshButton.setVisibility(View.VISIBLE);
     }
 
     @Override
@@ -137,7 +154,7 @@ public class NurseRoomActivity extends SignOutActivity {
         // Get position info
         CustomRecyclerView.RecyclerContextMenuInfo itemInfo =
                 (CustomRecyclerView.RecyclerContextMenuInfo) item.getMenuInfo();
-        Section section = sectionAdapter.getSections().get(itemInfo.position);
+        final Section section = sectionAdapter.getSections().get(itemInfo.position);
         Intent intent = new Intent(this, CreateActivity.class);
 
         switch (item.getItemId()) {
@@ -152,16 +169,16 @@ public class NurseRoomActivity extends SignOutActivity {
             case (R.id.edit_section_menu):
                 intent.putExtra("isCreate", "section");
                 intent.putExtra("isEdit", true);
-                intent.putExtra("section_title", section.getTitle());
-                intent.putExtra("section_summary", section.getSummary());
-                intent.putExtra("sectionId", section.getId());
+                intent.putExtra("title", section.getTitle());
+                intent.putExtra("summary", section.getSummary());
+                intent.putExtra("id", section.getId());
                 startActivity(intent);
                 return true;
 
                 // Delete a section
             case (R.id.delete_section_menu):
-                FireStoreUtil storeUtil = new FireStoreUtil(FirebaseFirestore.getInstance());
-                OnCompleteListener<Void> success = new OnCompleteListener<Void>() {
+                final FireStoreUtil storeUtil = new FireStoreUtil(FirebaseFirestore.getInstance());
+                final OnCompleteListener<Void> success = new OnCompleteListener<Void>() {
                     @Override
                     public void onComplete(@NonNull Task<Void> task) {
                         // do something when its successful
@@ -170,7 +187,7 @@ public class NurseRoomActivity extends SignOutActivity {
                                 Toast.LENGTH_SHORT).show();
                     }
                 };
-                OnFailureListener failure = new OnFailureListener() {
+                final OnFailureListener failure = new OnFailureListener() {
                     @Override
                     public void onFailure(@NonNull Exception e) {
                         // do something when it fails.
@@ -180,7 +197,27 @@ public class NurseRoomActivity extends SignOutActivity {
                                 Toast.LENGTH_SHORT).show();
                     }
                 };
-                storeUtil.deleteSection(section.getId(), success, failure);
+
+                AlertDialog.Builder alert = new AlertDialog.Builder(NurseRoomActivity.this);
+                alert.setTitle("Delete Operation");
+                alert.setMessage("Do you rely want to delete this section? Note that ALL LECTURES " +
+                        "in this section would be deleted");
+                alert.setPositiveButton("YES", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        storeUtil.deleteSection(section.getId(), success, failure);
+                        dialog.dismiss();
+                    }
+                });
+                alert.setNegativeButton("NO", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.dismiss();
+                    }
+                });
+
+                alert.show();
+
                 return true;
         }
         return true;
