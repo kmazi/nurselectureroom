@@ -1,6 +1,6 @@
 <resources>
     <string name="app_name">Nurse Lecture Room</string>
-    <string name="userProfile">Welcome nurse</string>
+    <string name="userProfile">Welcome Nurse</string>
     <string name="login">Get started</string>
     <string name="signout">Log Out</string>
     <string name="nurse_room">Nurse Room</string>
@@ -33,4 +33,5 @@
     <string name="create_lec">Create Lecture</string>
     <string name="delete_lecture">Delete Lecture</string>
     <string name="edit_lecture">Edit Lecture</string>
+    <string name="create_que">Create Question</string>
 </resources>

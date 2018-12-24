@@ -165,6 +165,12 @@ public class NurseRoomActivity extends SignOutActivity {
                 startActivity(intent);
                 return true;
 
+            case (R.id.create_question_menu):
+                Intent queIntent = new Intent(this, CreateQuestionActivity.class);
+                intent.putExtra("sectionId", section.getId());
+                startActivity(queIntent);
+                return true;
+
                 // Edit a section
             case (R.id.edit_section_menu):
                 intent.putExtra("isCreate", "section");

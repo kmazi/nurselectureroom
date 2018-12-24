@@ -24,7 +24,8 @@
         <activity android:name=".AboutActivity" />
         <activity android:name=".LectureContentActivity" />
         <activity android:name=".CreateActivity" />
-        <activity android:name=".LectureListActivity"></activity>
+        <activity android:name=".LectureListActivity" />
+        <activity android:name=".CreateQuestionActivity"></activity>
     </application>
 
 </manifest>

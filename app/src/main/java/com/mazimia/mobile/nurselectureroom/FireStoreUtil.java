@@ -21,14 +21,17 @@ public class FireStoreUtil {
 
     private CollectionReference lectureSections;
     private CollectionReference lectures;
+    private CollectionReference questions;
 
     private final String TAG = "Lecture section";
     private final String LECTURE_SECTIONS = "Sections";
     private final String LECTURES = "lectures";
+    private final String QUESTIONS = "Questions";
 
     private ArrayList<Section> sections = new ArrayList<>();
     private Section section = new Section();
     private Lecture singleLecture = new Lecture();
+    private Question singleQuestion;
 
 
     public FireStoreUtil(){
@@ -40,6 +43,7 @@ public class FireStoreUtil {
 
         lectureSections = db.collection(LECTURE_SECTIONS);
         lectures = db.collection(LECTURES);
+        questions = db.collection(QUESTIONS);
     }
 
 
@@ -196,6 +200,129 @@ public class FireStoreUtil {
                 .delete()
                 .addOnSuccessListener(success)
                 .addOnFailureListener(failure);
+
+    }
+
+
+    //////////////////////////////////////////////////////////////////////////////////////////////
+    // Question section
+    //////////////////////////////////////////////////////////////////////////////////////////////
+
+    public void createQuestion(final Question question) {
+
+        lectureSections.document(question.getSectionId()).get()
+                .addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
+                    @Override
+                    public void onSuccess(DocumentSnapshot documentSnapshot) {
+                        if (documentSnapshot.exists()) {
+
+                            questions.add(question)
+                                    .addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
+                                        @Override
+                                        public void onSuccess(DocumentReference documentReference) {
+                                            String questionRef = documentReference.getId();
+                                            documentReference.update(Question.ID, questionRef)
+                                                    .addOnCompleteListener(new OnCompleteListener<Void>() {
+                                                        @Override
+                                                        public void onComplete(@NonNull Task<Void> task) {
+                                                            // update the user on successful doc creation
+                                                        }
+                                                    });
+                                        }
+                                    })
+                                    .addOnFailureListener(new OnFailureListener() {
+                                        @Override
+                                        public void onFailure(@NonNull Exception e) {
+                                            // do something when doc creation fails.
+                                        }
+                                    });
+                        } else {
+
+                            // do something if the section don't exist
+                        }
+                    }
+                });
+
+    }
+
+    //get all questions for a section
+    public ArrayList<Question> getQuestions(String sectionId) {
+
+        final ArrayList<Question> secQuestions = new ArrayList<>();
+
+        questions.whereEqualTo(Question.SECTION_ID, sectionId)
+                .get().addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
+            @Override
+            public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
+
+                for (Question ques : queryDocumentSnapshots.toObjects(Question.class)) {
+
+                    secQuestions.add(ques);
+                }
+            }
+        });
+        return secQuestions;
+    }
+
+    // get question from a section
+    public Question getQuestion(String id) {
+
+        questions.document(id)
+                .get()
+                .addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
+                    @Override
+                    public void onSuccess(DocumentSnapshot documentSnapshot) {
+
+                        FireStoreUtil.this.singleQuestion = documentSnapshot.toObject(Question.class);
+                    }
+                });
+        return singleQuestion;
+    }
+
+    // Updates a lecture
+    public void updateQuestion(Question question) {
+
+        questions.document(question.getId())
+                .update(question.updateQuestionData())
+                .addOnSuccessListener(new OnSuccessListener<Void>() {
+                    @Override
+                    public void onSuccess(Void aVoid) {
+
+                        // do something
+                    }
+                })
+                .addOnFailureListener(new OnFailureListener() {
+
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+
+                        // do something on failure
+                    }
+
+                });
+    }
+
+    // Delete a question
+    public void deleteQuestion(String id) {
+
+        questions.document(id)
+                .delete()
+                .addOnSuccessListener(new OnSuccessListener<Void>() {
+                    @Override
+                    public void onSuccess(Void aVoid) {
+                        // Notify user that delete operation was successful
+                    }
+                })
+                .addOnFailureListener(new OnFailureListener() {
+
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+
+                        // do something on failure
+
+                    }
+
+                });
 
     }
 
