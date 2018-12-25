@@ -43,31 +43,29 @@ public class LectureContentActivity extends AppCompatActivity {
     private void setUpViewPager(ViewPager viewPager) {
         ViewPagerAdapter adapter = new ViewPagerAdapter(getSupportFragmentManager());
 
-        // Fragments
-        LectureFragment lec = new LectureFragment();
-        ObjectiveFragment obj = new ObjectiveFragment();
-        TheoryFragment theory = new TheoryFragment();
-
         // Get objects from previous activity via intent
         String lectureTitle = getIntent().getStringExtra("lecTitle");
         String lecNote = getIntent().getStringExtra("lecNote");
+        String sectionId = getIntent().getStringExtra("sectionId");
+        // Fragments
+        LectureFragment lec = new LectureFragment();
+        ObjectiveFragment obj = new ObjectiveFragment();
+        TheoryFragment theory = TheoryFragment.createQueFragmentWithSectionId(sectionId);
+
 
         // get objects from previous activity into the fragments
         Bundle lectureBundle = new Bundle();
         Bundle objBundle = new Bundle();
-        Bundle theoryBundle = new Bundle();
 
         // pub objects into the bundles for the fragments
         lectureBundle.putString("lecTitle", lectureTitle);
         lectureBundle.putString("lecNote", lecNote);
 
-//        objBundle.putParcelable("objective", objectives);
-//        theoryBundle.putParcelable("theory", theories);
+
 
         // Attach the bundles to the fragments
         lec.setArguments(lectureBundle);
         obj.setArguments(objBundle);
-        theory.setArguments(theoryBundle);
 
         // Add fragments to the adapter
         adapter.addFragment(lec, "Lecture");

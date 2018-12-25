@@ -13,7 +13,7 @@
 
 
         <Button
-            android:id="@+id/button"
+            android:id="@+id/submitQue"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginEnd="8dp"
@@ -23,17 +23,17 @@
             android:textColor="@color/browser_actions_bg_grey"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="@+id/textView8"
-            app:layout_constraintTop_toBottomOf="@+id/gridLayout" />
+            app:layout_constraintTop_toBottomOf="@+id/objgridLayout" />
 
         <android.support.v7.widget.GridLayout
-            android:id="@+id/gridLayout"
+            android:id="@+id/objgridLayout"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_marginStart="8dp"
             android:layout_marginEnd="8dp"
             android:layout_marginBottom="8dp"
             android:padding="@dimen/title_pad"
-            app:layout_constraintBottom_toTopOf="@+id/button"
+            app:layout_constraintBottom_toTopOf="@+id/submitQue"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/queTxt">
@@ -67,7 +67,7 @@
                 app:layout_row="1" />
 
             <EditText
-                android:id="@+id/editText6"
+                android:id="@+id/optBTxt"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:ems="10"
@@ -103,7 +103,7 @@
                 app:layout_row="3" />
 
             <EditText
-                android:id="@+id/editText8"
+                android:id="@+id/optDText"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:ems="10"
@@ -122,6 +122,7 @@
                 app:layout_row="4" />
 
             <RadioGroup
+                android:id="@+id/ansRadioGroup"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="4dp"
@@ -130,34 +131,34 @@
                 app:layout_row="4">
 
                 <RadioButton
-                    android:id="@+id/radioButton3"
+                    android:id="@+id/radioButtonA"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginRight="@dimen/title_pad"
+                    android:layout_marginRight="20dp"
                     android:layout_weight="1"
                     android:text="A"
                     android:textStyle="bold" />
 
                 <RadioButton
-                    android:id="@+id/radioButton4"
+                    android:id="@+id/radioButtonB"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginRight="@dimen/title_pad"
+                    android:layout_marginRight="20dp"
                     android:layout_weight="1"
                     android:text="B"
                     android:textStyle="bold" />
 
                 <RadioButton
-                    android:id="@+id/radioButton5"
+                    android:id="@+id/radioButtonC"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginRight="@dimen/title_pad"
+                    android:layout_marginRight="20dp"
                     android:layout_weight="1"
                     android:text="C"
                     android:textStyle="bold" />
 
                 <RadioButton
-                    android:id="@+id/radioButton6"
+                    android:id="@+id/radioButtonD"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginRight="@dimen/title_pad"
@@ -171,7 +172,7 @@
         <EditText
             android:id="@+id/queTxt"
             android:layout_width="0dp"
-            android:layout_height="140dp"
+            android:layout_height="wrap_content"
             android:layout_marginStart="8dp"
             android:layout_marginTop="8dp"
             android:layout_marginEnd="8dp"
@@ -180,11 +181,12 @@
             android:gravity="top"
             android:hint="Question"
             android:inputType="textMultiLine"
+            android:minLines="4"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/radioGroup"
+            app:layout_constraintTop_toBottomOf="@+id/queTypeRadioGroup"
             app:layout_constraintVertical_bias="1.0" />
 
         <TextView
@@ -203,7 +205,7 @@
             app:layout_constraintTop_toTopOf="parent" />
 
         <RadioGroup
-            android:id="@+id/radioGroup"
+            android:id="@+id/queTypeRadioGroup"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="8dp"

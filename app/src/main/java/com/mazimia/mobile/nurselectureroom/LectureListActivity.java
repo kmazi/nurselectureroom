@@ -51,10 +51,11 @@ public class LectureListActivity extends AppCompatActivity {
             @Override
             public void onClick(View view, int position) {
                 Intent lectureIntent = new Intent(LectureListActivity.this, LectureContentActivity.class);
-                String topic = lectureAdapter.getLecture(position).getTopic();
-                String note = lectureAdapter.getLecture(position).getNote();
-                lectureIntent.putExtra("lecTitle", topic);
-                lectureIntent.putExtra("lecNote", note);
+                Lecture lec = lectureAdapter.getLecture(position);
+
+                lectureIntent.putExtra("lecTitle", lec.getTopic());
+                lectureIntent.putExtra("lecNote", lec.getNote());
+                lectureIntent.putExtra("sectionId", lec.getSectionId());
                 startActivity(lectureIntent);
             }
         };

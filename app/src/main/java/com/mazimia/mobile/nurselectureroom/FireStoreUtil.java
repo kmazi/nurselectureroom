@@ -208,7 +208,9 @@ public class FireStoreUtil {
     // Question section
     //////////////////////////////////////////////////////////////////////////////////////////////
 
-    public void createQuestion(final Question question) {
+    public void createQuestion(final Question question,
+                               final OnCompleteListener<Void> complete,
+                               final OnFailureListener failure) {
 
         lectureSections.document(question.getSectionId()).get()
                 .addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
@@ -222,20 +224,10 @@ public class FireStoreUtil {
                                         public void onSuccess(DocumentReference documentReference) {
                                             String questionRef = documentReference.getId();
                                             documentReference.update(Question.ID, questionRef)
-                                                    .addOnCompleteListener(new OnCompleteListener<Void>() {
-                                                        @Override
-                                                        public void onComplete(@NonNull Task<Void> task) {
-                                                            // update the user on successful doc creation
-                                                        }
-                                                    });
+                                                    .addOnCompleteListener(complete);
                                         }
                                     })
-                                    .addOnFailureListener(new OnFailureListener() {
-                                        @Override
-                                        public void onFailure(@NonNull Exception e) {
-                                            // do something when doc creation fails.
-                                        }
-                                    });
+                                    .addOnFailureListener(failure);
                         } else {
 
                             // do something if the section don't exist
@@ -246,26 +238,18 @@ public class FireStoreUtil {
     }
 
     //get all questions for a section
-    public ArrayList<Question> getQuestions(String sectionId) {
-
-        final ArrayList<Question> secQuestions = new ArrayList<>();
+    public void getQuestions(String sectionId, String type, OnSuccessListener<QuerySnapshot> success,
+                             OnFailureListener failure) {
 
         questions.whereEqualTo(Question.SECTION_ID, sectionId)
-                .get().addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
-            @Override
-            public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
-
-                for (Question ques : queryDocumentSnapshots.toObjects(Question.class)) {
-
-                    secQuestions.add(ques);
-                }
-            }
-        });
-        return secQuestions;
+                .whereEqualTo(Question.TYPE, type)
+                .get().addOnSuccessListener(success)
+                    .addOnFailureListener(failure);
     }
 
+
     // get question from a section
-    public Question getQuestion(String id) {
+    public Question getTheoryQuestions(String id) {
 
         questions.document(id)
                 .get()

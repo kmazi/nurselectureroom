@@ -5,13 +5,14 @@ import android.widget.TextView;
 
 public abstract class CustomBaseAdapter extends CustomRecyclerView.Adapter<CustomBaseAdapter.CustomBaseAdapterViewHolder> {
 
-    private ViewHolderClickListener listener;
-
     public class CustomBaseAdapterViewHolder extends CustomRecyclerView.ViewHolder
             implements View.OnClickListener {
 
         public TextView sectionTitle;
         public TextView sectionDesc;
+
+        public TextView questionNo;
+        public TextView question;
         private ViewHolderClickListener clickListener;
 
         public CustomBaseAdapterViewHolder(View view, ViewHolderClickListener listener) {
@@ -20,6 +21,13 @@ public abstract class CustomBaseAdapter extends CustomRecyclerView.Adapter<Custo
             sectionDesc = view.findViewById(R.id.section_desc_txtview);
             clickListener = listener;
             view.setOnClickListener(this);
+        }
+
+        // Constructor to initialize the text fields in the question lists
+        public CustomBaseAdapterViewHolder(View view) {
+            super(view);
+            questionNo = view.findViewById(R.id.quetxtno);
+            question = view.findViewById(R.id.quetxt);
         }
 
         @Override

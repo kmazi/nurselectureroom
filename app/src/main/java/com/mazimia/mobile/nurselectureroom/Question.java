@@ -6,12 +6,16 @@ import java.util.Map;
 
 public class Question {
 
+    public void setSectionId(String sectionId) {
+        this.sectionId = sectionId;
+    }
+
     private String sectionId;
     private String id;
     private String question;
     private String type;
     private Map<String, String> options;
-    private Character answer;
+    private String answer;
     private String createdAt;
 
     public String getCreatedAt() {
@@ -28,6 +32,8 @@ public class Question {
     final static String OPTIONS = "options";
     final static String ANSWER = "answer";
     final static String CREATED_AT = "createdAt";
+    final static String OBJ = "objective";
+    final static String THEO = "theory";
 
     public String getType() {
         return type;
@@ -41,11 +47,11 @@ public class Question {
         this.options = options;
     }
 
-    public Character getAnswer() {
+    public String getAnswer() {
         return answer;
     }
 
-    public void setAnswer(Character answer) {
+    public void setAnswer(String answer) {
         this.answer = answer;
     }
 
@@ -99,16 +105,11 @@ public class Question {
             question.put(OPTIONS, getOptions());
         }
 
-        if (!this.sectionId.equals("") && this.sectionId != null) {
-
-            question.put(SECTION_ID, getSectionId());
-        }
-
         if (this.answer != null) {
 
             question.put(ANSWER, getAnswer());
         }
-        question.put(CREATED_AT, Calendar.getInstance().getTime());
+        question.put(CREATED_AT, Calendar.getInstance().getTime().toString());
         return question;
     }
 }
