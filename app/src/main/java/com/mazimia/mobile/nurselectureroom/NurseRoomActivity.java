@@ -177,7 +177,7 @@ public class NurseRoomActivity extends SignOutActivity {
                 intent.putExtra("isEdit", true);
                 intent.putExtra("title", section.getTitle());
                 intent.putExtra("summary", section.getSummary());
-                intent.putExtra("id", section.getId());
+                intent.putExtra("sectionId", section.getId());
                 startActivity(intent);
                 return true;
 

@@ -19,6 +19,11 @@ public class TheoryQueAdapter extends CustomBaseAdapter {
         notifyDataSetChanged();
     }
 
+    public void setListener(ViewHolderClickListener listener) {
+        this.listener = listener;
+    }
+
+    private ViewHolderClickListener listener;
     public ArrayList<Question> questions = new ArrayList<>();
 
 
@@ -28,21 +33,21 @@ public class TheoryQueAdapter extends CustomBaseAdapter {
         LayoutInflater inflater = LayoutInflater.from(parent.getContext());
         int question_list_layout_id = R.layout.theory_question_list;
         View view = inflater.inflate(question_list_layout_id, parent, false);
-        return new CustomBaseAdapterViewHolder(view);
+        return new CustomBaseAdapterViewHolder(view, listener, Question.THEO);
     }
 
     @Override
     public void onBindViewHolder(@NonNull CustomBaseAdapterViewHolder holder, int position) {
         Question question = getQuestions().get(position);
-        holder.questionNo.setText(String.valueOf(position));
+        holder.questionNo.setText(String.valueOf(position+1));
         holder.question.setText(question.getQuestion());
     }
 
     @Override
     public int getItemCount() {
-        if (this.getQuestions() == null){
+        if (getQuestions() == null){
             return 0;
         }
-        return this.getQuestions().size();
+        return getQuestions().size();
     }
 }

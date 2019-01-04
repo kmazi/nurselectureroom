@@ -10,7 +10,7 @@ class Section {
     private String title;
     private String thumbnail;
     private String summary;
-    private Date createdAt;
+    private String createdAt;
     private String id;
 
     public final static String TITLE = "title";
@@ -29,7 +29,7 @@ class Section {
         this.title = section_title;
         this.thumbnail = "";
         this.summary = "";
-        this.createdAt = Calendar.getInstance().getTime();
+        this.createdAt = Calendar.getInstance().getTime().toString();
         this.id = "";
     }
 
@@ -38,7 +38,7 @@ class Section {
         this.title = section_title;
         this.thumbnail = "";
         this.summary = section_summary;
-        this.createdAt = Calendar.getInstance().getTime();
+        this.createdAt = Calendar.getInstance().getTime().toString();
         this.id = "";
     }
 
@@ -47,7 +47,7 @@ class Section {
         this.title = section_title;
         this.thumbnail = imageUrl;
         this.summary = section_summary;
-        this.createdAt = Calendar.getInstance().getTime();
+        this.createdAt = Calendar.getInstance().getTime().toString();
         this.id = "";
     }
 
@@ -92,7 +92,7 @@ class Section {
     }
 
     // get last update for section
-    public Date getCreatedAt() {
+    public String getCreatedAt() {
         return createdAt;
     }
 

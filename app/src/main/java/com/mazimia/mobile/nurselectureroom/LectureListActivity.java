@@ -135,7 +135,8 @@ public class LectureListActivity extends AppCompatActivity {
                 intent.putExtra("isEdit", true);
                 intent.putExtra("title", lecture.getTopic());
                 intent.putExtra("summary", lecture.getDescription());
-                intent.putExtra("id", lecture.getId());
+                intent.putExtra("note", lecture.getNote());
+                intent.putExtra("lectureId", lecture.getId());
                 startActivity(intent);
                 return true;
 

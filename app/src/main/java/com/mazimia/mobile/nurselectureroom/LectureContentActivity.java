@@ -1,7 +1,6 @@
 package com.mazimia.mobile.nurselectureroom;
 
 import android.graphics.drawable.GradientDrawable;
-import android.os.Parcelable;
 import android.support.design.widget.TabLayout;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
@@ -49,13 +48,12 @@ public class LectureContentActivity extends AppCompatActivity {
         String sectionId = getIntent().getStringExtra("sectionId");
         // Fragments
         LectureFragment lec = new LectureFragment();
-        ObjectiveFragment obj = new ObjectiveFragment();
+        ObjectiveFragment obj = ObjectiveFragment.createObjFragment(sectionId);
         TheoryFragment theory = TheoryFragment.createQueFragmentWithSectionId(sectionId);
 
 
         // get objects from previous activity into the fragments
         Bundle lectureBundle = new Bundle();
-        Bundle objBundle = new Bundle();
 
         // pub objects into the bundles for the fragments
         lectureBundle.putString("lecTitle", lectureTitle);
@@ -65,7 +63,6 @@ public class LectureContentActivity extends AppCompatActivity {
 
         // Attach the bundles to the fragments
         lec.setArguments(lectureBundle);
-        obj.setArguments(objBundle);
 
         // Add fragments to the adapter
         adapter.addFragment(lec, "Lecture");

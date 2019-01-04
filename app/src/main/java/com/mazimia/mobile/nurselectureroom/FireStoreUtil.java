@@ -5,15 +5,12 @@ import android.support.annotation.NonNull;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
-import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
-import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 
-import java.util.ArrayList;
 import java.util.List;
 
 // A utility class for interfacing with Firestore database
@@ -23,20 +20,13 @@ public class FireStoreUtil {
     private CollectionReference lectures;
     private CollectionReference questions;
 
-    private final String TAG = "Lecture section";
     private final String LECTURE_SECTIONS = "Sections";
-    private final String LECTURES = "lectures";
+    private final String LECTURES = "Lectures";
     private final String QUESTIONS = "Questions";
 
-    private ArrayList<Section> sections = new ArrayList<>();
-    private Section section = new Section();
     private Lecture singleLecture = new Lecture();
     private Question singleQuestion;
 
-
-    public FireStoreUtil(){
-
-    }
 
 
     public FireStoreUtil(FirebaseFirestore db) {
@@ -49,26 +39,11 @@ public class FireStoreUtil {
 
     // Creates lecture section
     public void createLectureSection(Section section,
-                                     final OnCompleteListener<Void> successAction,
+                                     final OnSuccessListener<Void> successAction,
                                      OnFailureListener failAction) {
-
-        lectureSections.add(section)
-                .addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
-                    @Override
-                    public void onSuccess(DocumentReference documentReference) {
-                        String sectionRef = documentReference.getId();
-                        documentReference.update(Section.ID, sectionRef).addOnCompleteListener(successAction);
-                    }
-                })
-                .addOnFailureListener(failAction);
-    }
-
-
-    // Get a specific section
-    public Section getSection(String id) {
-
-        getLectureSection(id);
-        return section;
+        DocumentReference lecSection = lectureSections.document();
+        section.setId(lecSection.getId());
+        lecSection.set(section).addOnSuccessListener(successAction).addOnFailureListener(failAction);
     }
 
 
@@ -105,26 +80,6 @@ public class FireStoreUtil {
     }
 
 
-    // Get a particular lecture section
-    public void getLectureSection(String sectionId) {
-
-        lectureSections.document(sectionId).get()
-                .addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
-                    @Override
-                    public void onSuccess(DocumentSnapshot documentSnapshot) {
-                        section = documentSnapshot.toObject(Section.class);
-                    }
-                })
-        .addOnFailureListener(new OnFailureListener() {
-            @Override
-            public void onFailure(@NonNull Exception e) {
-                // do something when it fails
-            }
-        });
-
-    }
-
-
     // populate the sections field with section data
     public void getLectureSections(OnCompleteListener<QuerySnapshot> successListener) {
 
@@ -134,7 +89,7 @@ public class FireStoreUtil {
 
     // Creates lecture for a section
     public void createLecture(final Lecture lecture,
-                              final OnSuccessListener<DocumentReference> success,
+                              final OnSuccessListener<Void> success,
                               final OnFailureListener failure) {
 
         lectureSections.document(lecture.getSectionId()).get()
@@ -143,9 +98,10 @@ public class FireStoreUtil {
             public void onSuccess(DocumentSnapshot documentSnapshot) {
                 if (documentSnapshot.exists()) {
 
-                    lectures.add(lecture)
-                            .addOnSuccessListener(success)
+                    DocumentReference newLecture = lectures.document();
+                    newLecture.set(lecture).addOnSuccessListener(success)
                             .addOnFailureListener(failure);
+
                 } else {
 
                     // do something if the section don't exist
@@ -217,17 +173,10 @@ public class FireStoreUtil {
                     @Override
                     public void onSuccess(DocumentSnapshot documentSnapshot) {
                         if (documentSnapshot.exists()) {
-
-                            questions.add(question)
-                                    .addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
-                                        @Override
-                                        public void onSuccess(DocumentReference documentReference) {
-                                            String questionRef = documentReference.getId();
-                                            documentReference.update(Question.ID, questionRef)
-                                                    .addOnCompleteListener(complete);
-                                        }
-                                    })
+                            DocumentReference new_question = questions.document();
+                            new_question.set(question).addOnCompleteListener(complete)
                                     .addOnFailureListener(failure);
+
                         } else {
 
                             // do something if the section don't exist

@@ -43,9 +43,11 @@ public class CreateActivity extends AppCompatActivity {
 
         // Know whether to create a section or a lecture from intent extra
         final String action = getIntent().getStringExtra("isCreate");
-        final String id = getIntent().getStringExtra("id");
+        final String id = getIntent().getStringExtra("sectionId");
+        final String lecId = getIntent().getStringExtra("lectureId");
         final String title = getIntent().getStringExtra("title");
         final String summary = getIntent().getStringExtra("summary");
+        String lecNote = getIntent().getStringExtra("note");
         final boolean isEdit = getIntent().getBooleanExtra("isEdit", false);
 
         // Check to see if the user intend to edit an existing section
@@ -53,6 +55,7 @@ public class CreateActivity extends AppCompatActivity {
             createBtn.setText("Edit");
             this.title.setText(title);
             this.summary.setText(summary);
+            this.note.setText(lecNote);
         }
 
         if(action.equals("lecture")) {
@@ -114,9 +117,9 @@ public class CreateActivity extends AppCompatActivity {
                         Section section = new Section(getTitle, getSummary);
 
                         // On successful creation
-                        OnCompleteListener success = new OnCompleteListener<Void>() {
+                        OnSuccessListener<Void> success = new OnSuccessListener<Void>() {
                             @Override
-                            public void onComplete(@NonNull Task<Void> task) {
+                            public void onSuccess(Void aVoid) {
                                 clearText();
                                 Toast.makeText(CreateActivity.this,
                                         "Successfully created a section!",
@@ -145,7 +148,7 @@ public class CreateActivity extends AppCompatActivity {
                     if (isEdit) {
 
                         Lecture lecture = new Lecture(getTitle, getSummary, getNote);
-                        lecture.setId(id);
+                        lecture.setId(lecId);
 
                         OnSuccessListener success = new OnSuccessListener<Void>() {
                             @Override
@@ -174,12 +177,7 @@ public class CreateActivity extends AppCompatActivity {
                         lecture.setSectionId(id);
 
                         // handles success in creation of lecture
-                        OnSuccessListener success = new OnSuccessListener<DocumentReference>() {
-                            @Override
-                            public void onSuccess(DocumentReference o) {
-
-                                o.update(Lecture.ID, o.getId())
-                                        .addOnSuccessListener(new OnSuccessListener<Void>() {
+                        OnSuccessListener success = new OnSuccessListener<Void>() {
                                             @Override
                                             public void onSuccess(Void aVoid) {
                                                 Toast.makeText(CreateActivity.this,
@@ -187,17 +185,7 @@ public class CreateActivity extends AppCompatActivity {
                                                         Toast.LENGTH_LONG).show();
                                                 clearText();
                                             }
-                                        }).addOnFailureListener(new OnFailureListener() {
-                                    @Override
-                                    public void onFailure(@NonNull Exception e) {
-                                        Toast.makeText(CreateActivity.this,
-                                                "Could not update id of created lecture",
-                                                Toast.LENGTH_LONG).show();
-                                    }
-                                });
-
-                            }
-                        };
+                                        };
 
                         // on failure
                         OnFailureListener failure = new OnFailureListener() {

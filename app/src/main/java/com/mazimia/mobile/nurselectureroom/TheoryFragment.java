@@ -1,10 +1,15 @@
 package com.mazimia.mobile.nurselectureroom;
 
+import android.content.DialogInterface;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.LinearLayoutManager;
+import android.view.ContextMenu;
 import android.view.LayoutInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
@@ -28,6 +33,7 @@ public class TheoryFragment extends Fragment {
     private CustomRecyclerView queRecycleView;
     private static TheoryQueAdapter queAdapter;
     private FireStoreUtil storeUtil;
+    private ViewHolderClickListener listener;
 
 //    private OnFragmentInteractionListener mListener;
 
@@ -62,14 +68,27 @@ public class TheoryFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+
+        // click listener
+        listener = new ViewHolderClickListener() {
+            @Override
+            public void onClick(View view, int position) {
+                Toast.makeText(getActivity(), "I love theory questions ooo",
+                        Toast.LENGTH_SHORT).show();
+            }
+        };
+
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_theory, container, false);
         if (sectionId != null) {
             queRecycleView = view.findViewById(R.id.theoryQueCustomRecyclerView);
+
             LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getActivity(),
                     LinearLayoutManager.VERTICAL, false);
             queRecycleView.setLayoutManager(linearLayoutManager);
+            registerForContextMenu(queRecycleView);
             queAdapter = new TheoryQueAdapter();
+            queAdapter.setListener(listener);
             queRecycleView.setAdapter(queAdapter);
         }
 
@@ -107,4 +126,14 @@ public class TheoryFragment extends Fragment {
         return view;
     }
 
+    @Override
+    public void onCreateContextMenu(ContextMenu menu, View v, ContextMenu.ContextMenuInfo menuInfo) {
+        super.onCreateContextMenu(menu, v, menuInfo);
+    }
+
+    @Override
+    public boolean onContextItemSelected(MenuItem item) {
+        return super.onContextItemSelected(item);
+
+    }
 }

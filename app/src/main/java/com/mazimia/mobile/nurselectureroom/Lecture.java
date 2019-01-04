@@ -16,7 +16,7 @@ class Lecture {
 
     private Map<String, Object> lecture;
 
-    public final String CREATED_AT = "timestamp";
+    public final String CREATED_AT = "createdAt";
     public final static String TOPIC = "topic";
     public final static String DESCRIPTION = "description";
     public final static String NOTE = "note";
@@ -29,18 +29,12 @@ class Lecture {
     }
 
 
-    public Lecture (String topic, String description) {
-
-        this.topic = topic;
-        this.description = description;
-        this.note = "";
-    }
-
     public Lecture (String topic, String description, String note) {
 
         this.topic = topic;
         this.description = description;
         this.note = note;
+        this.createdAt = Calendar.getInstance().getTime().toString();
     }
 
     public String getSectionId() {
@@ -105,7 +99,7 @@ class Lecture {
             lecture.put(NOTE, getNote());
         }
 
-        lecture.put(CREATED_AT, Calendar.getInstance().getTime());
+        lecture.put(CREATED_AT, Calendar.getInstance().getTime().toString());
         return lecture;
     }
 

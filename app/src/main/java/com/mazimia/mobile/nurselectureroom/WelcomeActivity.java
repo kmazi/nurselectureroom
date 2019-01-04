@@ -1,6 +1,7 @@
 package com.mazimia.mobile.nurselectureroom;
 
 import android.content.Intent;
+import android.net.Uri;
 import android.opengl.Visibility;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -91,9 +92,6 @@ public class WelcomeActivity extends SignOutActivity {
 //            }
 //        });
 //
-//
-//
-//
 
     }
 
@@ -118,8 +116,14 @@ public class WelcomeActivity extends SignOutActivity {
 
     // Navigate to the feedback page
     private void openFeedbackActivity() {
-        Intent intent = new Intent(this, FeedbackActivity.class);
-        startActivity(intent);
+//        Intent intent = new Intent(this, FeedbackActivity.class);
+//        startActivity(intent);
+
+        Intent email = new Intent(Intent.ACTION_SENDTO, Uri.parse("mailto:"));
+        email.putExtra(Intent.EXTRA_EMAIL, new String[]{"nurse.lectureroom@gmail.com"});
+        email.putExtra(Intent.EXTRA_SUBJECT, "Give us feedback");
+//        email.setType("application/octet-stream");
+        startActivity(Intent.createChooser(email, "Choose an email client.."));
     }
 
 
@@ -127,6 +131,7 @@ public class WelcomeActivity extends SignOutActivity {
     private void openHighScoreActivity() {
         Intent intent = new Intent(this, HighScoreActivity.class);
         startActivity(intent);
+
     }
 
 

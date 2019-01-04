@@ -9,6 +9,7 @@
     <android.support.constraint.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:paddingBottom="@dimen/title_pad"
         tools:context=".CreateQuestionActivity">
 
 
@@ -22,24 +23,21 @@
             android:text="Create"
             android:textColor="@color/browser_actions_bg_grey"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="@+id/textView8"
+            app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/objgridLayout" />
 
         <android.support.v7.widget.GridLayout
             android:id="@+id/objgridLayout"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
             android:layout_marginStart="8dp"
             android:layout_marginEnd="8dp"
-            android:layout_marginBottom="8dp"
             android:padding="@dimen/title_pad"
-            app:layout_constraintBottom_toTopOf="@+id/submitQue"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/queTxt">
 
             <TextView
-                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:padding="@dimen/title_pad"
                 android:text="A"
@@ -49,16 +47,16 @@
 
             <EditText
                 android:id="@+id/optATxt"
-                android:layout_width="match_parent"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:ems="10"
                 android:inputType="textMultiLine"
                 app:layout_column="1"
+                app:layout_gravity="fill_horizontal"
                 app:layout_row="0" />
 
             <TextView
                 android:id="@+id/textView11"
-                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:padding="@dimen/title_pad"
                 android:text="B"
@@ -75,7 +73,6 @@
 
             <TextView
                 android:id="@+id/textView12"
-                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:padding="@dimen/title_pad"
                 android:text="C"
@@ -94,7 +91,6 @@
 
             <TextView
                 android:id="@+id/textView13"
-                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:padding="@dimen/title_pad"
                 android:text="D"
