@@ -2,6 +2,7 @@ package com.mazimia.mobile.nurselectureroom;
 
 import android.view.View;
 import android.widget.CheckBox;
+import android.widget.ImageButton;
 import android.widget.TextView;
 
 public abstract class CustomBaseAdapter extends CustomRecyclerView.Adapter<CustomBaseAdapter.CustomBaseAdapterViewHolder> {
@@ -21,6 +22,7 @@ public abstract class CustomBaseAdapter extends CustomRecyclerView.Adapter<Custo
         public CheckBox optB;
         public CheckBox optC;
         public CheckBox optD;
+
 
         public ViewHolderClickListener clickListener;
 

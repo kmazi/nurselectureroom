@@ -69,10 +69,20 @@ public class FireStoreUtil {
                         for (DocumentSnapshot doc : docs) {
                             doc.getReference().delete();
                         }
-
-                        lectureSections.document(secId).delete()
-                                .addOnCompleteListener(success)
+                        questions.whereEqualTo(Question.SECTION_ID, secId).get()
+                                .addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
+                                    @Override
+                                    public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
+                                        for (DocumentSnapshot que : queryDocumentSnapshots.getDocuments()) {
+                                            que.getReference().delete();
+                                        }
+                                        lectureSections.document(secId).delete()
+                                                .addOnCompleteListener(success)
+                                                .addOnFailureListener(failure);
+                                    }
+                                })
                                 .addOnFailureListener(failure);
+
                     }
                 })
                 .addOnFailureListener(failure);
@@ -99,6 +109,7 @@ public class FireStoreUtil {
                 if (documentSnapshot.exists()) {
 
                     DocumentReference newLecture = lectures.document();
+                    lecture.setId(newLecture.getId());
                     newLecture.set(lecture).addOnSuccessListener(success)
                             .addOnFailureListener(failure);
 
@@ -165,7 +176,7 @@ public class FireStoreUtil {
     //////////////////////////////////////////////////////////////////////////////////////////////
 
     public void createQuestion(final Question question,
-                               final OnCompleteListener<Void> complete,
+                               final OnSuccessListener<Void> complete,
                                final OnFailureListener failure) {
 
         lectureSections.document(question.getSectionId()).get()
@@ -174,7 +185,8 @@ public class FireStoreUtil {
                     public void onSuccess(DocumentSnapshot documentSnapshot) {
                         if (documentSnapshot.exists()) {
                             DocumentReference new_question = questions.document();
-                            new_question.set(question).addOnCompleteListener(complete)
+                            question.setId(new_question.getId());
+                            new_question.set(question).addOnSuccessListener(complete)
                                     .addOnFailureListener(failure);
 
                         } else {
@@ -196,66 +208,24 @@ public class FireStoreUtil {
                     .addOnFailureListener(failure);
     }
 
-
-    // get question from a section
-    public Question getTheoryQuestions(String id) {
-
-        questions.document(id)
-                .get()
-                .addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
-                    @Override
-                    public void onSuccess(DocumentSnapshot documentSnapshot) {
-
-                        FireStoreUtil.this.singleQuestion = documentSnapshot.toObject(Question.class);
-                    }
-                });
-        return singleQuestion;
-    }
-
     // Updates a lecture
-    public void updateQuestion(Question question) {
+    public void updateQuestion(Question question, OnSuccessListener<Void> success,
+                               OnFailureListener failure) {
 
         questions.document(question.getId())
                 .update(question.updateQuestionData())
-                .addOnSuccessListener(new OnSuccessListener<Void>() {
-                    @Override
-                    public void onSuccess(Void aVoid) {
-
-                        // do something
-                    }
-                })
-                .addOnFailureListener(new OnFailureListener() {
-
-                    @Override
-                    public void onFailure(@NonNull Exception e) {
-
-                        // do something on failure
-                    }
-
-                });
+                .addOnSuccessListener(success)
+                .addOnFailureListener(failure);
     }
 
     // Delete a question
-    public void deleteQuestion(String id) {
+    public void deleteQuestion(String id, OnSuccessListener<Void> success,
+                               OnFailureListener failure) {
 
         questions.document(id)
                 .delete()
-                .addOnSuccessListener(new OnSuccessListener<Void>() {
-                    @Override
-                    public void onSuccess(Void aVoid) {
-                        // Notify user that delete operation was successful
-                    }
-                })
-                .addOnFailureListener(new OnFailureListener() {
-
-                    @Override
-                    public void onFailure(@NonNull Exception e) {
-
-                        // do something on failure
-
-                    }
-
-                });
+                .addOnSuccessListener(success)
+                .addOnFailureListener(failure);
 
     }
 

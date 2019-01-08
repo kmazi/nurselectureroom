@@ -13,6 +13,7 @@ import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.FirebaseFirestore;
 
@@ -64,6 +65,39 @@ public class CreateQuestionActivity extends AppCompatActivity {
 
         storeUtil = new FireStoreUtil(FirebaseFirestore.getInstance());
 
+        // Fill up views if in edit mode
+        final Boolean isEdit = getIntent().getBooleanExtra("isEdit", false);
+        if (isEdit) {
+            questionTxt.setText(getIntent().getStringExtra("question"));
+            if (getIntent().getStringExtra("questionType").equals(Question.OBJ)) {
+                optATxt.setText(getIntent().getStringExtra("optionA"));
+                optBTxt.setText(getIntent().getStringExtra("optionB"));
+                optCText.setText(getIntent().getStringExtra("optionC"));
+                optDText.setText(getIntent().getStringExtra("optionD"));
+
+                String ans = getIntent().getStringExtra("answer");
+                switch (ans) {
+                    case "A":
+                        ansRadioGroup.check(a);
+                        break;
+
+                    case "B":
+                        ansRadioGroup.check(b);
+                        break;
+
+                    case "C":
+                        ansRadioGroup.check(c);
+                        break;
+
+                    case "D":
+                        ansRadioGroup.check(d);
+                        break;
+                }
+            } else
+                queTypeGroup.check(theoryId);
+        }
+
+
         // Hide obj form if theory question is to be created
         int id = queTypeGroup.getCheckedRadioButtonId();
         queRBtn = findViewById(id);
@@ -93,10 +127,9 @@ public class CreateQuestionActivity extends AppCompatActivity {
                 question.setSectionId(getIntent().getStringExtra("sectionId"));
                 question.setCreatedAt(Calendar.getInstance().getTime().toString());
 
-                OnCompleteListener<Void> theoryComplete = new OnCompleteListener<Void>() {
+                OnSuccessListener<Void> theoryComplete = new OnSuccessListener<Void>() {
                     @Override
-                    public void onComplete(@NonNull Task<Void> task) {
-                        // update the user on successful doc creation
+                    public void onSuccess(Void aVoid) {
                         Toast.makeText(CreateQuestionActivity.this,
                                 "Successfully created a question", Toast.LENGTH_LONG).show();
                         clearText();
@@ -117,7 +150,13 @@ public class CreateQuestionActivity extends AppCompatActivity {
 
                     question.setType(Question.THEO);
                     // Create theory question
-                    storeUtil.createQuestion(question, theoryComplete, theoryFailure);
+                    if (!question.getQuestion().equals(""))
+                        if (isEdit) {
+                            question.setId(getIntent().getStringExtra("questionId"));
+                            storeUtil.updateQuestion(question, theoryComplete, theoryFailure);
+                        }
+                        else
+                            storeUtil.createQuestion(question, theoryComplete, theoryFailure);
                 } else if (checkedId == objId) {
 
                     question.setType(Question.OBJ);
@@ -148,8 +187,13 @@ public class CreateQuestionActivity extends AppCompatActivity {
                             break;
 
                     }
-
-                    storeUtil.createQuestion(question, theoryComplete, theoryFailure);
+                    if(!question.getQuestion().equals("") && !question.getAnswer().equals(""))
+                        if (isEdit) {
+                            question.setId(getIntent().getStringExtra("questionId"));
+                            storeUtil.updateQuestion(question, theoryComplete, theoryFailure);
+                        }
+                        else
+                        storeUtil.createQuestion(question, theoryComplete, theoryFailure);
                 }
 
             }

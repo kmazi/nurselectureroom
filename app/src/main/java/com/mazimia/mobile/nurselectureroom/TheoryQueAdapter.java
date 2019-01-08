@@ -9,6 +9,16 @@ import java.util.ArrayList;
 
 public class TheoryQueAdapter extends CustomBaseAdapter {
 
+//    private Activity activity;
+
+    public  TheoryQueAdapter()
+    {
+
+    }
+
+//    public TheoryQueAdapter(Activity activity) {
+//        this.activity = activity;
+//    }
     public ArrayList<Question> getQuestions() {
         return questions;
     }
@@ -24,6 +34,12 @@ public class TheoryQueAdapter extends CustomBaseAdapter {
     }
 
     private ViewHolderClickListener listener;
+
+    public void setImgButtonListener(View.OnClickListener imgButtonListener) {
+        this.imgButtonListener = imgButtonListener;
+    }
+
+    private View.OnClickListener imgButtonListener;
     public ArrayList<Question> questions = new ArrayList<>();
 
 
@@ -37,10 +53,11 @@ public class TheoryQueAdapter extends CustomBaseAdapter {
     }
 
     @Override
-    public void onBindViewHolder(@NonNull CustomBaseAdapterViewHolder holder, int position) {
+    public void onBindViewHolder(@NonNull final CustomBaseAdapterViewHolder holder, int position) {
         Question question = getQuestions().get(position);
         holder.questionNo.setText(String.valueOf(position+1));
         holder.question.setText(question.getQuestion());
+        holder.itemView.setLongClickable(true);
     }
 
     @Override

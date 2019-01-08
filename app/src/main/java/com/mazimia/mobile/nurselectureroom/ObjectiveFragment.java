@@ -9,6 +9,7 @@ import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.LinearLayoutManager;
 import android.view.ContextMenu;
 import android.view.LayoutInflater;
+import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
@@ -72,8 +73,8 @@ public class ObjectiveFragment extends Fragment {
         objectiveClickListener = new ViewHolderClickListener() {
             @Override
             public void onClick(View view, int position) {
-                Toast.makeText(getActivity(), "Sup "+ String.valueOf(position),
-                        Toast.LENGTH_SHORT).show();
+//                Toast.makeText(getActivity(), "Sup "+ String.valueOf(position),
+//                        Toast.LENGTH_SHORT).show();
             }
         };
 
@@ -126,6 +127,100 @@ public class ObjectiveFragment extends Fragment {
         storeUtil.getQuestions(sectionId, Question.OBJ, success, failure);
 
         return view;
+    }
+
+    final int CONTEXT_EDIT = 1;
+    final int CONTEXT_DELETE = 2;
+
+    @Override
+    public void onCreateContextMenu(ContextMenu menu, View v, ContextMenu.ContextMenuInfo menuInfo) {
+//        menu.setHeaderTitle("Theory Options");
+        menu.add(Menu.NONE, CONTEXT_EDIT, Menu.NONE, "Edit");
+        menu.add(Menu.NONE, CONTEXT_DELETE, Menu.NONE, "Delete");
+    }
+
+    @Override
+    public boolean onContextItemSelected(MenuItem item) {
+        CustomRecyclerView.RecyclerContextMenuInfo itemInfo =
+                (CustomRecyclerView.RecyclerContextMenuInfo)item.getMenuInfo();
+
+        final Question question = objectiveQueAdapter.getQuestions().get(itemInfo.position);
+        Intent intent = new Intent(getActivity(), CreateQuestionActivity.class);
+        if(item.getItemId() != CONTEXT_EDIT && item.getItemId() != CONTEXT_DELETE)
+            return false;
+        switch (item.getItemId()) {
+            case (CONTEXT_EDIT):
+                intent.putExtra("isEdit", true);
+                intent.putExtra("questionId", question.getId());
+                intent.putExtra("sectionId", question.getSectionId());
+                intent.putExtra("question", question.getQuestion());
+                intent.putExtra("questionType", Question.OBJ);
+                intent.putExtra("optionA", question.getOptions().get("A"));
+                intent.putExtra("optionB", question.getOptions().get("B"));
+                intent.putExtra("optionC", question.getOptions().get("C"));
+                intent.putExtra("optionD", question.getOptions().get("D"));
+                intent.putExtra("answer", question.getAnswer());
+//                String optionC = question.getOptions().get("C");
+//                String optionD = question.getOptions().get("D");
+//                if (!optionC.equals(""))
+//                    intent.putExtra("optionC", question.getOptions().get("C"));
+//                if (!optionD.equals(""))
+//                    intent.putExtra("optionD", question.getOptions().get("D"));
+                startActivity(intent);
+                return true;
+
+            case (CONTEXT_DELETE):
+                final FireStoreUtil storeUtil = new FireStoreUtil(FirebaseFirestore.getInstance());
+                AlertDialog.Builder alert = new AlertDialog.Builder(getContext());
+                alert.setTitle("Delete Operation");
+                alert.setMessage("Do you rely want to delete this question?");
+                alert.setPositiveButton("YES", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(final DialogInterface dialog, int which) {
+                        final OnSuccessListener<Void> delSuccess = new OnSuccessListener<Void>() {
+                            @Override
+                            public void onSuccess(Void aVoid) {
+                                // Notify user that delete operation was successful
+                                dialog.dismiss();
+                                Toast.makeText(getContext(), "Question has been successfully deleted",
+                                        Toast.LENGTH_LONG).show();
+
+//                                Boolean isRemoved = objectiveQueAdapter.getQuestions().remove(question);
+//                                if (isRemoved)
+//                                    objectiveQueAdapter.setQuestions(objectiveQueAdapter.getQuestions());
+                            }
+                        };
+
+                        final OnFailureListener delFailure = new OnFailureListener() {
+
+                            @Override
+                            public void onFailure(@NonNull Exception e) {
+
+                                // do something on failure
+                                dialog.dismiss();
+                                Toast.makeText(getContext(), "Question could not be deleted",
+                                        Toast.LENGTH_LONG).show();
+
+
+                            }
+
+                        };
+
+                        storeUtil.deleteQuestion(question.getId(), delSuccess, delFailure);
+
+                    }
+                });
+                alert.setNegativeButton("NO", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.dismiss();
+                    }
+                });
+
+                alert.show();
+                return true;
+        }
+        return true;
     }
 
 }
