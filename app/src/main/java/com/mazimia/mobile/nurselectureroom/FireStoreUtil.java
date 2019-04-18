@@ -5,35 +5,50 @@ import android.support.annotation.NonNull;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QuerySnapshot;
+import com.google.firebase.firestore.SetOptions;
 
 import java.util.List;
+import java.util.Map;
 
 // A utility class for interfacing with Firestore database
 public class FireStoreUtil {
 
-    private CollectionReference lectureSections;
+    private CollectionReference sections;
     private CollectionReference lectures;
     private CollectionReference questions;
+    private CollectionReference users;
+    private CollectionReference highestScores;
 
     private final String LECTURE_SECTIONS = "Sections";
     private final String LECTURES = "Lectures";
     private final String QUESTIONS = "Questions";
+    private final String USERS = "Users";
+    private final String SCORES = "Scores";
 
     private Lecture singleLecture = new Lecture();
-    private Question singleQuestion;
 
 
 
     public FireStoreUtil(FirebaseFirestore db) {
 
-        lectureSections = db.collection(LECTURE_SECTIONS);
+        sections = db.collection(LECTURE_SECTIONS);
         lectures = db.collection(LECTURES);
         questions = db.collection(QUESTIONS);
+        users = db.collection(USERS);
+        highestScores = db.collection(SCORES);
+    }
+
+    // Creates users
+    public void createUser(Map<String, Object> user, OnSuccessListener<Void> success,
+                           OnFailureListener failure) {
+        users.document(user.get("token").toString())
+        .set(user).addOnSuccessListener(success).addOnFailureListener(failure);
     }
 
 
@@ -41,7 +56,7 @@ public class FireStoreUtil {
     public void createLectureSection(Section section,
                                      final OnSuccessListener<Void> successAction,
                                      OnFailureListener failAction) {
-        DocumentReference lecSection = lectureSections.document();
+        DocumentReference lecSection = sections.document();
         section.setId(lecSection.getId());
         lecSection.set(section).addOnSuccessListener(successAction).addOnFailureListener(failAction);
     }
@@ -51,7 +66,7 @@ public class FireStoreUtil {
     public void updateSection(Section sec, OnSuccessListener<Void> success,
                               OnFailureListener failure) {
 
-        lectureSections.document(sec.getId()).update(sec.updateSectionData())
+        sections.document(sec.getId()).update(sec.updateSectionData())
                 .addOnSuccessListener(success)
         .addOnFailureListener(failure);
 
@@ -76,7 +91,7 @@ public class FireStoreUtil {
                                         for (DocumentSnapshot que : queryDocumentSnapshots.getDocuments()) {
                                             que.getReference().delete();
                                         }
-                                        lectureSections.document(secId).delete()
+                                        sections.document(secId).delete()
                                                 .addOnCompleteListener(success)
                                                 .addOnFailureListener(failure);
                                     }
@@ -93,7 +108,14 @@ public class FireStoreUtil {
     // populate the sections field with section data
     public void getLectureSections(OnCompleteListener<QuerySnapshot> successListener) {
 
-        lectureSections.get().addOnCompleteListener(successListener);
+        sections.get().addOnCompleteListener(successListener);
+    }
+
+    // get a particular section
+    public void getSection(String sectionId, OnSuccessListener<DocumentSnapshot> success,
+                           OnFailureListener failure) {
+        sections.document(sectionId).get().addOnSuccessListener(success)
+                .addOnFailureListener(failure);
     }
 
 
@@ -102,7 +124,7 @@ public class FireStoreUtil {
                               final OnSuccessListener<Void> success,
                               final OnFailureListener failure) {
 
-        lectureSections.document(lecture.getSectionId()).get()
+        sections.document(lecture.getSectionId()).get()
                 .addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
             @Override
             public void onSuccess(DocumentSnapshot documentSnapshot) {
@@ -163,7 +185,7 @@ public class FireStoreUtil {
     public void deleteLecture(String lecId, OnSuccessListener<Void> success,
                               OnFailureListener failure) {
 
-        lectureSections.document(lecId)
+        lectures.document(lecId)
                 .delete()
                 .addOnSuccessListener(success)
                 .addOnFailureListener(failure);
@@ -179,7 +201,7 @@ public class FireStoreUtil {
                                final OnSuccessListener<Void> complete,
                                final OnFailureListener failure) {
 
-        lectureSections.document(question.getSectionId()).get()
+        sections.document(question.getSectionId()).get()
                 .addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
                     @Override
                     public void onSuccess(DocumentSnapshot documentSnapshot) {
@@ -229,4 +251,25 @@ public class FireStoreUtil {
 
     }
 
+    //////////////////////////=========== HIGHEST SCORES ==============/////////////////////////////
+    // Get Highest scores.
+    public void getHighestScores(OnSuccessListener<QuerySnapshot> success, OnFailureListener failure) {
+        highestScores.get().addOnSuccessListener(success)
+                .addOnFailureListener(failure);
+    }
+
+    // Set Highest score
+    public void setHighScores(HighScore score, OnFailureListener failure,
+                              OnSuccessListener<Void> success) {
+        DocumentReference scoreDoc =  highestScores.document();
+        score.setId(scoreDoc.getId());
+        scoreDoc.set(score).addOnFailureListener(failure).addOnSuccessListener(success);
+    }
+
+    // Get Highest score for a particular section
+    public void getHighestScoresFor(String sectionTitle, OnSuccessListener<QuerySnapshot> success,
+                                    OnFailureListener failure) {
+        highestScores.whereEqualTo("scoreSection", sectionTitle).get().addOnFailureListener(
+                failure).addOnSuccessListener(success);
+    }
 }

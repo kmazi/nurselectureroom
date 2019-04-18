@@ -19,6 +19,7 @@ import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QuerySnapshot;
 
@@ -90,7 +91,8 @@ public class TheoryFragment extends Fragment {
             LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getActivity(),
                     LinearLayoutManager.VERTICAL, false);
             queRecycleView.setLayoutManager(linearLayoutManager);
-            registerForContextMenu(queRecycleView);
+            if (FirebaseAuth.getInstance().getCurrentUser().getEmail().equals("nurse.lectureroom@gmail.com"))
+                registerForContextMenu(queRecycleView);
             queAdapter = new TheoryQueAdapter();
             queAdapter.setListener(listener);
             queRecycleView.setAdapter(queAdapter);

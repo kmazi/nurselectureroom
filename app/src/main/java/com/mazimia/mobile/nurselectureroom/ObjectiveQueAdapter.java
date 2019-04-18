@@ -1,11 +1,21 @@
 package com.mazimia.mobile.nurselectureroom;
 
 import android.content.Context;
+import android.content.DialogInterface;
 import android.support.annotation.NonNull;
+import android.support.v7.app.AlertDialog;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.CheckBox;
+import android.widget.Toast;
+
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.QuerySnapshot;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -15,12 +25,19 @@ import java.util.Map;
 public class ObjectiveQueAdapter extends CustomBaseAdapter {
 
     private Context mContext;
+    private String objectiveSection;
 
     public ArrayList<Question> getQuestions() {
         return questions;
     }
 
     ArrayList<Map<String, Boolean>> checkStates = new ArrayList<>();
+    int correctAnswer = 0;
+    int totalQuestion = 0;
+
+    public void setObjectiveSection(String objectiveSection) {
+        this.objectiveSection = objectiveSection;
+    }
 
     interface Change {
         void changeBkgColor(CheckBox selectBox);
@@ -34,6 +51,7 @@ public class ObjectiveQueAdapter extends CustomBaseAdapter {
     public void setQuestions(ArrayList<Question> questions) {
         this.questions.clear();
         this.questions.addAll(questions);
+        totalQuestion = this.questions.size();
         notifyDataSetChanged();
     }
 
@@ -190,6 +208,7 @@ public class ObjectiveQueAdapter extends CustomBaseAdapter {
                     }
                 }
                 if (selectedBox == ansBox) {
+                    correctAnswer ++;
                     selectedBox.setBackgroundColor(mContext.getResources().getColor(R.color.fui_bgPhone));
                     selectedBox.setTextColor(mContext.getResources().getColor(R.color.browser_actions_bg_grey));
 
@@ -200,10 +219,74 @@ public class ObjectiveQueAdapter extends CustomBaseAdapter {
                     ansBox.setTextColor(mContext.getResources().getColor(R.color.browser_actions_bg_grey));
 
                 }
+                if (totalQuestion == 0)
+                    runScoreReport();
+            }
+
+            private void runScoreReport() {
+                AlertDialog dialog = new AlertDialog.Builder(mContext).create();
+                dialog.setTitle("Score");
+                dialog.setMessage("Congratulations on attempting all questions \n" +
+                        "Your scored "+ String.valueOf(correctAnswer) + " points");
+
+
+                dialog.setButton(AlertDialog.BUTTON_POSITIVE, "Ok", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(final DialogInterface dialog, int which) {
+
+                        final OnFailureListener failure = new OnFailureListener() {
+                            @Override
+                            public void onFailure(@NonNull Exception e) {
+                                dialog.dismiss();
+                                Toast.makeText(mContext, "Highest score successfully recorded",
+                                        Toast.LENGTH_SHORT).show();
+                            }
+                        };
+
+                        final OnSuccessListener<Void> success = new OnSuccessListener<Void>() {
+                            @Override
+                            public void onSuccess(Void aVoid) {
+                                dialog.dismiss();
+                                Toast.makeText(mContext, "Check your internet connection",
+                                        Toast.LENGTH_SHORT).show();
+                            }
+                        };
+                        final FireStoreUtil storeUtil = new FireStoreUtil(FirebaseFirestore.getInstance());
+
+                        OnSuccessListener<QuerySnapshot> successful = new OnSuccessListener<QuerySnapshot>() {
+                            @Override
+                            public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
+                                ArrayList<HighScore> scores = new ArrayList<>();
+                                for (HighScore score : queryDocumentSnapshots.toObjects(HighScore.class)) {
+                                    scores.add(score);
+                                }
+                                if (scores.size() == 0 || scores.get(0).getHighestPoint() > correctAnswer) {
+                                    HighScore score = new HighScore();
+                                    score.setScoreSection(objectiveSection);
+                                    score.setHighestPoint(correctAnswer);
+                                    score.setScorer(FirebaseAuth.getInstance().getCurrentUser().getDisplayName());
+
+                                    storeUtil.setHighScores(score, failure, success);
+                                }
+                            }
+                        };
+
+                        OnFailureListener failed = new OnFailureListener() {
+                            @Override
+                            public void onFailure(@NonNull Exception e) {
+                                dialog.dismiss();
+                            }
+                        };
+                        storeUtil.getHighestScoresFor(objectiveSection, successful ,failed);
+                    }
+                });
+                dialog.show();
+
             }
 
             @Override
             public void disable() {
+                totalQuestion--;
                 checkBox.setEnabled(false);
                 checkBox2.setEnabled(false);
                 checkBox3.setEnabled(false);

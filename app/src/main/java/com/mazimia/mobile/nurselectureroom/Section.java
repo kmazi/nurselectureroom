@@ -91,11 +91,6 @@ class Section {
         this.id = id;
     }
 
-    // get last update for section
-    public String getCreatedAt() {
-        return createdAt;
-    }
-
     // create the document to add to a collection
     public Map<String, Object> updateSectionData() {
 
@@ -113,7 +108,7 @@ class Section {
 
             section.put(THUMBNAIL, getThumbnail());
         }
-        section.put(CREATEDAT, Calendar.getInstance().getTime());
+        section.put(CREATEDAT, Calendar.getInstance().getTime().toString());
         return section;
     }
 }

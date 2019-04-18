@@ -12,6 +12,7 @@ public abstract class CustomBaseAdapter extends CustomRecyclerView.Adapter<Custo
 
         public TextView sectionTitle;
         public TextView sectionDesc;
+        public ImageButton optionImgBtn;
 
         public TextView questionNo;
         public TextView question;
@@ -23,6 +24,10 @@ public abstract class CustomBaseAdapter extends CustomRecyclerView.Adapter<Custo
         public CheckBox optC;
         public CheckBox optD;
 
+        public TextView scoreSection;
+        public TextView scoreNames;
+        public TextView scorePoints;
+
 
         public ViewHolderClickListener clickListener;
 
@@ -30,6 +35,11 @@ public abstract class CustomBaseAdapter extends CustomRecyclerView.Adapter<Custo
             super(view);
             sectionTitle = view.findViewById(R.id.section_title_txtview);
             sectionDesc = view.findViewById(R.id.section_desc_txtview);
+            optionImgBtn = view.findViewById(R.id.optionImgBtn);
+
+            scoreSection = view.findViewById(R.id.score_section);
+            scoreNames = view.findViewById(R.id.score_name);
+            scorePoints = view.findViewById(R.id.score);
             clickListener = listener;
             view.setOnClickListener(this);
         }

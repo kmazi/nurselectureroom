@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">Nurse Lecture Room</string>
+    <string name="app_name">NLRoom</string>
     <string name="userProfile">Welcome Nurse</string>
     <string name="login">Get started</string>
     <string name="signout">Log Out</string>

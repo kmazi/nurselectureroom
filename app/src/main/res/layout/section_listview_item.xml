@@ -18,15 +18,17 @@
 
     <TextView
         android:id="@+id/section_title_txtview"
-        android:layout_width="292dp"
-        android:layout_height="35dp"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
         android:layout_marginStart="13dp"
         android:layout_marginTop="8dp"
         android:layout_marginEnd="8dp"
         android:text="TextView"
+        android:textAlignment="viewStart"
+        android:textColor="@color/fui_bgGitHub"
         android:textSize="@dimen/title_case"
         android:textStyle="bold"
-        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/optionImgBtn"
         app:layout_constraintStart_toEndOf="@+id/imageView2"
         app:layout_constraintTop_toTopOf="parent" />
 
@@ -41,6 +43,17 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@+id/imageView2"
         app:layout_constraintTop_toBottomOf="@+id/section_title_txtview" />
+
+    <ImageButton
+        android:id="@+id/optionImgBtn"
+        android:layout_width="31dp"
+        android:layout_height="46dp"
+        android:layout_marginTop="4dp"
+        android:layout_marginEnd="8dp"
+        android:background="@color/fui_bgGoogle"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@mipmap/circled_menu_48" />
 
     <View
         android:id="@+id/view_divider"

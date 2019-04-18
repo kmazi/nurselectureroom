@@ -47,7 +47,7 @@ public class LectureContentActivity extends AppCompatActivity {
         String lecNote = getIntent().getStringExtra("lecNote");
         String sectionId = getIntent().getStringExtra("sectionId");
         // Fragments
-        LectureFragment lec = new LectureFragment();
+        //LectureFragment lec = new LectureFragment();
         ObjectiveFragment obj = ObjectiveFragment.createObjFragment(sectionId);
         TheoryFragment theory = TheoryFragment.createQueFragmentWithSectionId(sectionId);
 
@@ -56,16 +56,16 @@ public class LectureContentActivity extends AppCompatActivity {
         Bundle lectureBundle = new Bundle();
 
         // pub objects into the bundles for the fragments
-        lectureBundle.putString("lecTitle", lectureTitle);
+        //lectureBundle.putString("lecTitle", lectureTitle);
         lectureBundle.putString("lecNote", lecNote);
 
 
 
         // Attach the bundles to the fragments
-        lec.setArguments(lectureBundle);
+        //lec.setArguments(lectureBundle);
 
         // Add fragments to the adapter
-        adapter.addFragment(lec, "Lecture");
+        //adapter.addFragment(lec, "Lecture");
         adapter.addFragment(obj, "Objective");
         adapter.addFragment(theory, "Theory");
         viewPager.setAdapter(adapter);

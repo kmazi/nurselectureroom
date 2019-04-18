@@ -18,6 +18,8 @@ import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QuerySnapshot;
 
@@ -78,6 +80,9 @@ public class ObjectiveFragment extends Fragment {
             }
         };
 
+        // Query Firestore database for theory questions
+        storeUtil = new FireStoreUtil(FirebaseFirestore.getInstance());
+
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_objective, container, false);
         if (sectionId != null) {
@@ -87,16 +92,37 @@ public class ObjectiveFragment extends Fragment {
             LinearLayoutManager manager = new LinearLayoutManager(getActivity(),
                     LinearLayoutManager.VERTICAL, false);
             objRecyclerView.setLayoutManager(manager);
-            registerForContextMenu(objRecyclerView);
+            String adminMails = FirebaseAuth.getInstance().getCurrentUser().getEmail();
+            if (adminMails.equals("nurse.lectureroom@gmail.com") || adminMails.equals("kingsleyu13@yahoo.com"))
+                registerForContextMenu(objRecyclerView);
             objectiveQueAdapter = new ObjectiveQueAdapter(getContext());
 
             objectiveQueAdapter.setListener(objectiveClickListener);
 
+            // Getting the section title to use for updating highscores
+            //
+            ///
+            //
+            OnFailureListener failure = new OnFailureListener() {
+                @Override
+                public void onFailure(@NonNull Exception e) {
+                    Toast.makeText(getContext(), "Couldn't tell which section to upload scores",
+                            Toast.LENGTH_LONG).show();
+                }
+            };
+
+            OnSuccessListener<DocumentSnapshot> success = new OnSuccessListener<DocumentSnapshot>() {
+                @Override
+                public void onSuccess(DocumentSnapshot documentSnapshot) {
+                    objectiveQueAdapter.setObjectiveSection(
+                            documentSnapshot.toObject(Section.class).getTitle()
+                    );
+                }
+            };
+            storeUtil.getSection(sectionId, success, failure);
+
             objRecyclerView.setAdapter(objectiveQueAdapter);
         }
-
-        // Query Firestore database for theory questions
-        storeUtil = new FireStoreUtil(FirebaseFirestore.getInstance());
 
         // success listener
         OnSuccessListener<QuerySnapshot> success = new OnSuccessListener<QuerySnapshot>() {
@@ -160,12 +186,6 @@ public class ObjectiveFragment extends Fragment {
                 intent.putExtra("optionC", question.getOptions().get("C"));
                 intent.putExtra("optionD", question.getOptions().get("D"));
                 intent.putExtra("answer", question.getAnswer());
-//                String optionC = question.getOptions().get("C");
-//                String optionD = question.getOptions().get("D");
-//                if (!optionC.equals(""))
-//                    intent.putExtra("optionC", question.getOptions().get("C"));
-//                if (!optionD.equals(""))
-//                    intent.putExtra("optionD", question.getOptions().get("D"));
                 startActivity(intent);
                 return true;
 

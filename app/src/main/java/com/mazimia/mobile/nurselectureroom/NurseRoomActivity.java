@@ -11,6 +11,7 @@ import android.view.ContextMenu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.ImageButton;
 import android.widget.ProgressBar;
 import android.widget.Toast;
 
@@ -30,8 +31,10 @@ public class NurseRoomActivity extends SignOutActivity {
     private SectionAdapter sectionAdapter;
     private ProgressBar progress;
     private ViewHolderClickListener sectionClickListener;
+    private ViewHolderClickListener optionListener;
     private FloatingActionButton createSectionBtn;
     private FloatingActionButton refreshButton;
+    private ImageButton optionBtn;
     FireStoreUtil storeUtil;
 
     @Override
@@ -45,6 +48,11 @@ public class NurseRoomActivity extends SignOutActivity {
         progress = findViewById(R.id.progressBar2);
         progress.setVisibility(View.VISIBLE);
         createSectionBtn = findViewById(R.id.addSectionBtn);
+        String adminMail = FirebaseAuth.getInstance().getCurrentUser().getEmail();
+        if (adminMail.equals("nurse.lectureroom@gmail.com") || adminMail.equals("kingsleyu13@yahoo.com"))
+            createSectionBtn.setVisibility(View.VISIBLE);
+        else
+            createSectionBtn.setVisibility(View.GONE);
         refreshButton = findViewById(R.id.refreshFoatBtn);
 
         // Fires when the section float button is clicked
@@ -76,10 +84,21 @@ public class NurseRoomActivity extends SignOutActivity {
             }
         };
 
-        // register for context menu
-        registerForContextMenu(sectionView);
+        optionListener = new ViewHolderClickListener() {
+            @Override
+            public void onClick(View view, int position) {
+                // register for context menu
+                if (FirebaseAuth.getInstance().getCurrentUser().getEmail().equals("nurse.lectureroom@gmail.com")){
+//                    view.setLongClickable(false);
+                    registerForContextMenu(view);
+                }
+
+            }
+        };
 
         sectionAdapter = new SectionAdapter(sectionClickListener);
+        sectionAdapter.setContext(this);
+        sectionAdapter.setOptionListener(optionListener);
         sectionView.setAdapter(sectionAdapter);
         storeUtil = new FireStoreUtil(FirebaseFirestore.getInstance());
 
@@ -93,7 +112,6 @@ public class NurseRoomActivity extends SignOutActivity {
         });
 
         storeUtil.getLectureSections(loadSectionsListener());
-
     }
 
     public OnCompleteListener<QuerySnapshot> loadSectionsListener() {
@@ -104,7 +122,6 @@ public class NurseRoomActivity extends SignOutActivity {
                 if (task.isSuccessful()) {
                     final ArrayList<Section> sections = new ArrayList<>();
                     for (QueryDocumentSnapshot document : task.getResult()) {
-
                         sections.add(document.toObject(Section.class));
                     }
 
@@ -140,92 +157,4 @@ public class NurseRoomActivity extends SignOutActivity {
         refreshButton.setVisibility(View.VISIBLE);
     }
 
-    @Override
-    public void onCreateContextMenu(ContextMenu menu, View v, ContextMenu.ContextMenuInfo menuInfo) {
-        super.onCreateContextMenu(menu, v, menuInfo);
-
-        // inflate menu from xml
-        MenuInflater inflater = NurseRoomActivity.this.getMenuInflater();
-        inflater.inflate(R.menu.section_options, menu);
-    }
-
-    @Override
-    public boolean onContextItemSelected(MenuItem item) {
-        // Get position info
-        CustomRecyclerView.RecyclerContextMenuInfo itemInfo =
-                (CustomRecyclerView.RecyclerContextMenuInfo) item.getMenuInfo();
-        final Section section = sectionAdapter.getSections().get(itemInfo.position);
-        Intent intent = new Intent(this, CreateActivity.class);
-
-        switch (item.getItemId()) {
-            // Create a lecture from a section.
-            case (R.id.create_lecture_menu):
-                intent.putExtra("sectionId", section.getId());
-                intent.putExtra("isCreate", "lecture");
-                startActivity(intent);
-                return true;
-
-            case (R.id.create_question_menu):
-                Intent queIntent = new Intent(this, CreateQuestionActivity.class);
-                queIntent.putExtra("sectionId", section.getId());
-                startActivity(queIntent);
-                return true;
-
-                // Edit a section
-            case (R.id.edit_section_menu):
-                intent.putExtra("isCreate", "section");
-                intent.putExtra("isEdit", true);
-                intent.putExtra("title", section.getTitle());
-                intent.putExtra("summary", section.getSummary());
-                intent.putExtra("sectionId", section.getId());
-                startActivity(intent);
-                return true;
-
-                // Delete a section
-            case (R.id.delete_section_menu):
-                final FireStoreUtil storeUtil = new FireStoreUtil(FirebaseFirestore.getInstance());
-                final OnCompleteListener<Void> success = new OnCompleteListener<Void>() {
-                    @Override
-                    public void onComplete(@NonNull Task<Void> task) {
-                        // do something when its successful
-                        Toast.makeText(NurseRoomActivity.this,
-                                "Successfully deleted the section and it's lectures",
-                                Toast.LENGTH_SHORT).show();
-                    }
-                };
-                final OnFailureListener failure = new OnFailureListener() {
-                    @Override
-                    public void onFailure(@NonNull Exception e) {
-                        // do something when it fails.
-                        Toast.makeText(NurseRoomActivity.this,
-                                "Could not delete the section nor it's lectures," +
-                                        " check your internet connection",
-                                Toast.LENGTH_SHORT).show();
-                    }
-                };
-
-                AlertDialog.Builder alert = new AlertDialog.Builder(NurseRoomActivity.this);
-                alert.setTitle("Delete Operation");
-                alert.setMessage("Do you rely want to delete this section? Note that ALL LECTURES " +
-                        "in this section would be deleted");
-                alert.setPositiveButton("YES", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        storeUtil.deleteSection(section.getId(), success, failure);
-                        dialog.dismiss();
-                    }
-                });
-                alert.setNegativeButton("NO", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        dialog.dismiss();
-                    }
-                });
-
-                alert.show();
-
-                return true;
-        }
-        return true;
-    }
 }
