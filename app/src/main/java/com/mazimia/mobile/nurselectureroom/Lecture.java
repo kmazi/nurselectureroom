@@ -16,9 +16,9 @@ class Lecture {
 
     private Map<String, Object> lecture;
 
-    public final String CREATED_AT = "timestamp";
-    public final static String TOPIC = "title";
-    public final static String DESCRIPTION = "summary";
+    public final String CREATED_AT = "createdAt";
+    public final static String TOPIC = "topic";
+    public final static String DESCRIPTION = "description";
     public final static String NOTE = "note";
     public final static String ID = "id";
     public final static String SECTION_ID = "sectionId";
@@ -28,20 +28,13 @@ class Lecture {
 
     }
 
-    public Lecture (String topic, String description) {
-
-        this.topic = topic;
-        this.description = description;
-        this.note = "";
-        this.lecture = new HashMap<>();
-    }
 
     public Lecture (String topic, String description, String note) {
 
         this.topic = topic;
         this.description = description;
         this.note = note;
-        this.lecture = new HashMap<>();
+        this.createdAt = Calendar.getInstance().getTime().toString();
     }
 
     public String getSectionId() {
@@ -88,40 +81,25 @@ class Lecture {
     }
 
 
-    // Get the lectures
-    public Map<String, Object> getLecture() {
-        return lecture;
-    }
-
-
     // create the lecture for a section
     public Map<String, Object> updateLectureData() {
 
         Map<String, Object> lecture = new HashMap<>();
-        if (this.topic != "" && this.topic != null) {
+        if (!this.topic.equals("") && this.topic != null) {
             lecture.put(TOPIC, getTopic());
         }
 
-        if (this.description != "" && this.description != null) {
+        if (!this.description.equals("") && this.description != null) {
 
             lecture.put(DESCRIPTION, getDescription());
         }
 
-        if (this.note != "" && this.note != null) {
+        if (!this.note.equals("") && this.note != null) {
 
             lecture.put(NOTE, getNote());
         }
 
-        if (this.sectionId != "" && this.sectionId != null) {
-
-            lecture.put(SECTION_ID, getSectionId());
-        }
-
-        if (this.id != "" && this.id != null) {
-
-            lecture.put(ID, getId());
-        }
-        lecture.put(CREATED_AT, Calendar.getInstance().getTime());
+        lecture.put(CREATED_AT, Calendar.getInstance().getTime().toString());
         return lecture;
     }
 

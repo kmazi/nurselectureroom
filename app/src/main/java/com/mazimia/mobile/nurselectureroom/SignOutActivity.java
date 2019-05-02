@@ -31,16 +31,6 @@ public class SignOutActivity extends AppCompatActivity {
 
         FirebaseFirestore db = FirebaseFirestore.getInstance();
         storeUtil = new FireStoreUtil(db);
-        lectureSec = new Section(
-                "Heart Disease",
-                "Blood is essential in the live of humans",
-                "doc/start/jump/" + Math.random());
-
-        lecture = new Lecture("Back pain",
-                "Pain is pain, whether back or front. It might just lead to death",
-                "Please it doesn't matter");
-        lecture.setId("z3gmjYiF9PREeJyH6XQI");
-        storeUtil.getLecture(lecture);
     }
 
 
@@ -63,19 +53,6 @@ public class SignOutActivity extends AppCompatActivity {
                 signOutUser();
                 return true;
 
-            case R.id.add_section_menu:
-                storeUtil.createLectureSection(lectureSec, new OnCompleteListener<Void>() {
-                    @Override
-                    public void onComplete(@NonNull Task<Void> task) {
-                        // do something when its successful
-                    }
-                }, new OnFailureListener() {
-                    @Override
-                    public void onFailure(@NonNull Exception e) {
-                        // do something when operation fails
-                    }
-                });
-                return true;
         }
         return true;
     }

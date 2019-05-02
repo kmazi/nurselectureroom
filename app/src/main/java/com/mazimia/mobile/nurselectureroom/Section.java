@@ -10,7 +10,7 @@ class Section {
     private String title;
     private String thumbnail;
     private String summary;
-    private Date createdAt;
+    private String createdAt;
     private String id;
 
     public final static String TITLE = "title";
@@ -29,7 +29,7 @@ class Section {
         this.title = section_title;
         this.thumbnail = "";
         this.summary = "";
-        this.createdAt = Calendar.getInstance().getTime();
+        this.createdAt = Calendar.getInstance().getTime().toString();
         this.id = "";
     }
 
@@ -38,7 +38,7 @@ class Section {
         this.title = section_title;
         this.thumbnail = "";
         this.summary = section_summary;
-        this.createdAt = Calendar.getInstance().getTime();
+        this.createdAt = Calendar.getInstance().getTime().toString();
         this.id = "";
     }
 
@@ -47,7 +47,7 @@ class Section {
         this.title = section_title;
         this.thumbnail = imageUrl;
         this.summary = section_summary;
-        this.createdAt = Calendar.getInstance().getTime();
+        this.createdAt = Calendar.getInstance().getTime().toString();
         this.id = "";
     }
 
@@ -91,29 +91,24 @@ class Section {
         this.id = id;
     }
 
-    // get last update for section
-    public Date getCreatedAt() {
-        return createdAt;
-    }
-
     // create the document to add to a collection
     public Map<String, Object> updateSectionData() {
 
         Map<String, Object> section = new HashMap<>();
-        if (this.title != "" && this.title != null) {
+        if (!this.title.equals("") && !this.title.equals(null)) {
             section.put(TITLE, getTitle());
         }
 
-        if (this.summary != "" && this.summary != null) {
+        if (!this.summary.equals("") && !this.summary.equals(null)) {
 
             section.put(SUMMARY, getSummary());
         }
 
-        if (this.thumbnail != "" && this.thumbnail != null) {
+        if (!this.thumbnail.equals("") && !this.thumbnail.equals(null)) {
 
             section.put(THUMBNAIL, getThumbnail());
         }
-        section.put(CREATEDAT, Calendar.getInstance().getTime());
+        section.put(CREATEDAT, Calendar.getInstance().getTime().toString());
         return section;
     }
 }

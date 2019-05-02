@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item
+        android:id="@+id/edit_lecture_menu"
+        android:title="@string/edit_lecture" />
+
+    <item android:title="@string/delete_lecture"
+        android:id="@+id/delete_lecture_menu"/>
+</menu>

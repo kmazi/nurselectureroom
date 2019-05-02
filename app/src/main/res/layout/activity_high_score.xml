@@ -8,14 +8,27 @@
 
     <TextView
         android:id="@+id/textView4"
-        android:layout_width="wrap_content"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginEnd="8dp"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="8dp"
+        android:background="@color/title_bkg"
+        android:paddingTop="@dimen/title_pad"
+        android:paddingBottom="@dimen/title_pad"
         android:text="Highest Scores"
+        android:textAlignment="center"
+        android:textColor="@color/browser_actions_bg_grey"
         android:textSize="@dimen/title_case"
+        android:textStyle="bold"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
+
+    <com.mazimia.mobile.nurselectureroom.CustomRecyclerView
+        android:id="@+id/highScoreRecyclerview"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_marginBottom="8dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textView4"></com.mazimia.mobile.nurselectureroom.CustomRecyclerView>
+
 </android.support.constraint.ConstraintLayout>

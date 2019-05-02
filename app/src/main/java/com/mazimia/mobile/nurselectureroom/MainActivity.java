@@ -2,6 +2,7 @@ package com.mazimia.mobile.nurselectureroom;
 
 import android.content.Context;
 import android.content.Intent;
+import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
@@ -10,11 +11,16 @@ import android.widget.Toast;
 
 import com.firebase.ui.auth.AuthUI;
 import com.firebase.ui.auth.IdpResponse;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.firestore.FirebaseFirestore;
 
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -48,16 +54,48 @@ public class MainActivity extends AppCompatActivity {
         if (requestCode == RC_SIGN_IN) {
             IdpResponse response = IdpResponse.fromResultIntent(data);
             if (resultCode == RESULT_OK) {
-                // get the current user after log in
-                FirebaseUser currentUser = mAuth.getCurrentUser();
-                // update the UI to the next page
                 Toast.makeText(this, "Authentication successful", Toast.LENGTH_SHORT)
                         .show();
-                updateUI(currentUser);
+                // get the current user after log in
+                FirebaseUser currentUser = FirebaseAuth.getInstance().getCurrentUser();
+                OnSuccessListener<Void> success = new OnSuccessListener<Void>() {
+                    @Override
+                    public void onSuccess(Void aVoid) {
+                        Toast.makeText(MainActivity.this,
+                                "Successfully created user",
+                                Toast.LENGTH_SHORT)
+                                .show();
+                    }
+                };
+
+                OnFailureListener failure = new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        Toast.makeText(MainActivity.this,
+                                "Couldn't create user. Sign up with your email account",
+                                Toast.LENGTH_SHORT)
+                                .show();
+                    }
+                };
+                Map<String, Object> user = new HashMap<>();
+                user.put("displayName", currentUser.getDisplayName());
+                user.put("email", currentUser.getEmail());
+                user.put("token", currentUser.getUid());
+                new FireStoreUtil(FirebaseFirestore.getInstance()).createUser(user, success, failure);
+
+                // update the UI to the next page
+
+                updateUI(FirebaseAuth.getInstance().getCurrentUser());
+                finish();
             } else {
                 // show the error message to the user via toast
-                String errorInfo = response.getError().getMessage();
-                Toast.makeText(this, errorInfo, Toast.LENGTH_LONG).show();
+                if (response == null) {
+                    Toast.makeText(this, "Could not complete authentication", Toast.LENGTH_LONG).show();
+                } else {
+                    String errorInfo = response.getError().getMessage();
+                    Toast.makeText(this, errorInfo, Toast.LENGTH_LONG).show();
+                }
+
             }
         }
 
@@ -68,7 +106,7 @@ public class MainActivity extends AppCompatActivity {
         // log the user in if they've been authenticated otherwise
         // show the auth page
         if (currentUser != null) {
-            logUserIn();
+            logUserIn(currentUser);
         } else {// show the auth page from firebase ui
             authenticateUser();
         }
@@ -89,8 +127,9 @@ public class MainActivity extends AppCompatActivity {
 
 
     // Navigate a user to the landing page after authentication
-    private void logUserIn() {
+    private void logUserIn(FirebaseUser currentUser) {
         Intent startIntent = new Intent(this, WelcomeActivity.class);
+        startIntent.putExtra("userInfo", currentUser);
         startActivity(startIntent);
     }
 }
