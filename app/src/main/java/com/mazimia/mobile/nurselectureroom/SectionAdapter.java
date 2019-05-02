@@ -20,6 +20,7 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.FirebaseFirestore;
 
 import java.util.ArrayList;
+//import org.apache.commons.lang3.StringUtils;
 
 class SectionAdapter extends CustomBaseAdapter {
 
