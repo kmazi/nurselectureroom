@@ -12,6 +12,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/mid_size_margin"
+        android:fontFamily="@font/amaranth"
         android:paddingLeft="@dimen/mid_size_margin"
         android:paddingRight="@dimen/mid_size_margin"
         android:text="Welcome to the study room for nurses, a central library for all your medical lectures."
