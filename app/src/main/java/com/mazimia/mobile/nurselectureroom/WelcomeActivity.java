@@ -34,7 +34,7 @@ public class WelcomeActivity extends SignOutActivity {
             .setTitle("Information")
             .setIcon(R.drawable.ic_launcher_background)
             .setMessage("There's an update out there!"+
-                    " Navigate to playstore to get it.")
+                    " Navigate to Google Play Store to get it.")
                     .setPositiveButton("Ok", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
@@ -53,6 +53,7 @@ public class WelcomeActivity extends SignOutActivity {
 
         }
 
+        // Initialize the views created in the activity_welcome.xml file
         userProfile = findViewById(R.id.welcome_textview);
         userImage = findViewById(R.id.name_avatar_textview);
         studyBtn = findViewById(R.id.studyBtn);
@@ -62,15 +63,23 @@ public class WelcomeActivity extends SignOutActivity {
 
         Intent welcomeIntent = getIntent();
         FirebaseUser currentUser = welcomeIntent.getParcelableExtra("userInfo");
-        String userName = currentUser.getDisplayName();
-        String firstName = userName.split(" ")[0];
-        userProfile.setText(userProfile.getText() + " " + firstName);
+        if (currentUser != null) {
+            String[] names = currentUser.getDisplayName().split(" ");
+            String firstName = names[0];
+            userProfile.setText(userProfile.getText() + " " + firstName);
 
-        userImage = findViewById(R.id.name_avatar_textview);
-        Character firstInitial = userName.charAt(0);
-        Character secondInitial = userName.charAt(userName.indexOf(" ") + 1);
-        String initials = firstInitial.toString()+secondInitial.toString();
-        userImage.setText(initials);
+            Character firstInitial = names[0].charAt(0);
+            Character secondInitial;
+            String initials;
+            if (names.length > 1) {
+                secondInitial = names[1].charAt(0);
+                initials = firstInitial.toString() + secondInitial.toString();
+            } else {
+                initials = firstInitial.toString();
+            }
+
+            userImage.setText(initials);
+        }
 
         studyBtn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -93,15 +102,6 @@ public class WelcomeActivity extends SignOutActivity {
             }
         });
 
-//        CircleImageView avatar = findViewById(R.id.profile_image);
-//        avatar.setVisibility(View.GONE);
-//
-//        Glide.with(WelcomeActivity.this).load(currentUser.getPhotoUrl())
-//                .into(avatar);
-//        avatar.setVisibility(View.VISIBLE);
-//        userImage.setVisibility(View.GONE);
-//        nrButton = findViewById(R.id.nrButton);
-
         highScoreButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -110,13 +110,6 @@ public class WelcomeActivity extends SignOutActivity {
         });
 //
 
-    }
-
-    @Override
-    public void onBackPressed() {
-        super.onBackPressed();
-        Toast.makeText(this, "Unable to load sections",
-                Toast.LENGTH_LONG);
     }
 
     @Override

@@ -1,6 +1,7 @@
 package com.mazimia.mobile.nurselectureroom;
 
 import android.content.Intent;
+import android.os.Handler;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -23,15 +24,16 @@ import java.util.Map;
 
 public class MainActivity extends AppCompatActivity {
 
-    private FirebaseAuth mAuth;
     private static final int RC_SIGN_IN = 321;
     Button logInButton;
+    FirebaseUser currentUser;
+    private static final int TIME_INTERVAL = 2000; // # milliseconds, desired time passed between two back presses.
+    private long mBackPressed;
     
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 
         super.onCreate(savedInstanceState);
-        mAuth = FirebaseAuth.getInstance();
         setContentView(R.layout.activity_main);
 
         // handle the click event of the log in button
@@ -39,7 +41,8 @@ public class MainActivity extends AppCompatActivity {
         logInButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                updateUI(mAuth.getCurrentUser());
+                currentUser = FirebaseAuth.getInstance().getCurrentUser();
+                updateUI();
             }
         });
     }
@@ -56,7 +59,7 @@ public class MainActivity extends AppCompatActivity {
                 Toast.makeText(this, "Authentication successful", Toast.LENGTH_SHORT)
                         .show();
                 // get the current user after log in
-                FirebaseUser currentUser = FirebaseAuth.getInstance().getCurrentUser();
+
                 OnSuccessListener<Void> success = new OnSuccessListener<Void>() {
                     @Override
                     public void onSuccess(Void aVoid) {
@@ -76,6 +79,7 @@ public class MainActivity extends AppCompatActivity {
                                 .show();
                     }
                 };
+                currentUser = FirebaseAuth.getInstance().getCurrentUser();
                 Map<String, Object> user = new HashMap<>();
                 user.put("displayName", currentUser.getDisplayName());
                 user.put("email", currentUser.getEmail());
@@ -84,7 +88,7 @@ public class MainActivity extends AppCompatActivity {
 
                 // update the UI to the next page
 
-                updateUI(FirebaseAuth.getInstance().getCurrentUser());
+                updateUI();
                 finish();
             } else {
                 // show the error message to the user via toast
@@ -100,8 +104,20 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
+    @Override
+    public void onBackPressed() {
+        if (mBackPressed + TIME_INTERVAL > System.currentTimeMillis())
+        {
+            super.onBackPressed();
+            return;
+        }
+        else { Toast.makeText(getBaseContext(), "Tap back button again to to exit", Toast.LENGTH_SHORT).show(); }
+
+        mBackPressed = System.currentTimeMillis();
+    }
+
     // Toggle user between auth page and welcome page
-    private void updateUI(FirebaseUser currentUser) {
+    private void updateUI() {
         // log the user in if they've been authenticated otherwise
         // show the auth page
         if (currentUser != null) {
