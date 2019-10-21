@@ -33,8 +33,8 @@ public class WelcomeActivity extends SignOutActivity {
             AlertDialog alert = new AlertDialog.Builder(this)
             .setTitle("Information")
             .setIcon(R.drawable.ic_launcher_background)
-            .setMessage("There's an update out there!"+
-                    " Navigate to Google Play Store to get it.")
+            .setMessage("There's an updated version out there! uninstall your current version"+
+                    "  and then navigate to Google Play Store and search for simple nursing to get it.")
                     .setPositiveButton("Ok", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
