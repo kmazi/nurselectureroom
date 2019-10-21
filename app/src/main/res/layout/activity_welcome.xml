@@ -1,0 +1,167 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <android.support.constraint.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        tools:context=".WelcomeActivity">
+
+
+        <TextView
+            android:id="@+id/welcome_textview"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:background="@color/title_bkg"
+            android:paddingTop="10dp"
+            android:paddingBottom="10dp"
+            android:text="@string/userProfile"
+            android:textAlignment="center"
+            android:textColor="@color/browser_actions_bg_grey"
+            android:textSize="@dimen/title_case"
+            android:textStyle="bold"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <FrameLayout
+            android:id="@+id/nurse_avatar"
+            android:layout_width="@dimen/avatar_size"
+            android:layout_height="@dimen/avatar_size"
+            android:layout_marginTop="20dp"
+            android:layout_marginEnd="8dp"
+            android:layout_marginRight="8dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/welcome_textview">
+
+            <TextView
+                android:id="@+id/name_avatar_textview"
+                android:layout_width="@dimen/avatar_size"
+                android:layout_height="@dimen/avatar_size"
+                android:background="@drawable/circle"
+                android:gravity="center"
+                android:textColor="@color/browser_actions_bg_grey"
+                android:textSize="40sp" />
+
+            <de.hdodenhof.circleimageview.CircleImageView xmlns:app="http://schemas.android.com/apk/res-auto"
+                android:id="@+id/profile_image"
+                android:layout_width="@dimen/avatar_size"
+                android:layout_height="@dimen/avatar_size"
+                app:civ_border_color="#FF000000"
+                app:civ_border_width="2dp" />
+        </FrameLayout>
+
+        <android.support.v7.widget.CardView
+            android:id="@+id/cardView"
+            android:layout_width="@dimen/action_btn"
+            android:layout_height="@dimen/action_btn"
+            android:layout_marginStart="32dp"
+            android:layout_marginLeft="32dp"
+            android:layout_marginTop="40dp"
+            android:layout_marginEnd="8dp"
+            android:layout_marginRight="8dp"
+            app:cardCornerRadius="20dp"
+            app:layout_constraintEnd_toStartOf="@+id/cardView2"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/nurse_avatar">
+
+            <Button
+                android:id="@+id/studyBtn"
+                android:layout_width="@dimen/action_btn"
+                android:layout_height="110dp"
+                android:background="@drawable/common_full_open_on_phone"
+                android:drawableTop="@mipmap/study_icon_large"
+                android:paddingTop="@dimen/btn_padding_top"
+                android:text="@string/Studies"
+                android:textColor="@color/colorPrimary" />
+        </android.support.v7.widget.CardView>
+
+        <android.support.v7.widget.CardView
+            android:id="@+id/cardView2"
+            android:layout_width="@dimen/action_btn"
+            android:layout_height="@dimen/action_btn"
+            android:layout_marginStart="20dp"
+            android:layout_marginLeft="20dp"
+            android:layout_marginTop="40dp"
+            android:layout_marginEnd="32dp"
+            android:layout_marginRight="32dp"
+            app:cardCornerRadius="20dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/cardView"
+            app:layout_constraintTop_toBottomOf="@+id/nurse_avatar">
+
+            <Button
+                android:id="@+id/highscoreBtn"
+                android:layout_width="@dimen/action_btn"
+                android:layout_height="@dimen/action_btn"
+                android:background="@drawable/common_full_open_on_phone"
+                android:drawableTop="@mipmap/score_card_icon"
+                android:paddingTop="@dimen/btn_padding_top"
+                android:text="@string/Highscore"
+                android:textColor="@color/colorPrimary" />
+        </android.support.v7.widget.CardView>
+
+        <android.support.v7.widget.CardView
+            android:id="@+id/cardView4"
+            android:layout_width="@dimen/action_btn"
+            android:layout_height="@dimen/action_btn"
+            android:layout_marginStart="32dp"
+            android:layout_marginLeft="32dp"
+            android:layout_marginTop="20dp"
+            android:layout_marginEnd="8dp"
+            android:layout_marginRight="8dp"
+            android:layout_marginBottom="16dp"
+            app:cardCornerRadius="20dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toStartOf="@+id/cardView3"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/cardView">
+
+            <Button
+                android:id="@+id/fback_btn"
+                android:layout_width="@dimen/action_btn"
+                android:layout_height="@dimen/action_btn"
+                android:background="@drawable/common_full_open_on_phone"
+                android:clickable="false"
+                android:drawableTop="@mipmap/feedback_96"
+                android:paddingTop="@dimen/btn_padding_top"
+                android:text="@string/Feedback"
+                android:textColor="@color/colorPrimary" />
+        </android.support.v7.widget.CardView>
+
+        <android.support.v7.widget.CardView
+            android:id="@+id/cardView3"
+            android:layout_width="@dimen/action_btn"
+            android:layout_height="@dimen/action_btn"
+            android:layout_marginStart="20dp"
+            android:layout_marginLeft="20dp"
+            android:layout_marginTop="20dp"
+            android:layout_marginEnd="32dp"
+            android:layout_marginRight="32dp"
+            android:layout_marginBottom="16dp"
+            app:cardCornerRadius="20dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/cardView4"
+            app:layout_constraintTop_toBottomOf="@+id/cardView2">
+
+            <Button
+                android:id="@+id/aboutBtn"
+                android:layout_width="@dimen/action_btn"
+                android:layout_height="@dimen/action_btn"
+                android:background="@drawable/common_full_open_on_phone"
+                android:drawableTop="@mipmap/person_female_96"
+                android:paddingTop="@dimen/btn_padding_top"
+                android:text="@string/About"
+                android:textColor="@color/colorPrimary" />
+        </android.support.v7.widget.CardView>
+
+    </android.support.constraint.ConstraintLayout>
+
+</ScrollView>
+    <!--android:src="@drawable/profile"-->

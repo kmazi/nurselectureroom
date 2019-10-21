@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item
+        android:id="@+id/create_lecture_menu"
+        android:title="@string/create_lec" />
+
+    <item
+        android:id="@+id/create_question_menu"
+        android:title="@string/create_que" />
+
+    <item
+        android:id="@+id/edit_section_menu"
+        android:title="@string/edit_section" />
+
+    <item android:title="@string/delete_section"
+        android:id="@+id/delete_section_menu"/>
+</menu>

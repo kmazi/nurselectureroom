@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <dimen name="title_case">20sp</dimen>
+    <dimen name="header_case">18sp</dimen>
+    <dimen name="intro_case">20sp</dimen>
+    <dimen name="mid_size_margin">20dp</dimen>
+    <dimen name="large_margin">50dp</dimen>
+    <dimen name="container_padding">15dp</dimen>
+    <dimen name="text_padding">5dp</dimen>
+    <dimen name="avatar_size">150dp</dimen>
+    <dimen name="avatar_radius">60dp</dimen>
+    <dimen name="action_btn">110dp</dimen>
+    <dimen name="btn_padding_top">20dp</dimen>
+    <dimen name="title_pad">10dp</dimen>
+</resources>

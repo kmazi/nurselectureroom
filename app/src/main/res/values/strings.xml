@@ -1,3 +1,37 @@
 <resources>
-    <string name="app_name">nurse lecture room</string>
+    <string name="app_name">NLRoom</string>
+    <string name="userProfile">Welcome Nurse</string>
+    <string name="login">Get started</string>
+    <string name="signout">Log Out</string>
+    <string name="nurse_room">Nurse Room</string>
+    <string name="highscore">Highscore</string>
+    <string name="feedback">Feedback</string>
+    <string name="lecture">Lecture</string>
+    <string name="objective">Objective</string>
+    <string name="theory">Theory</string>
+    <string name="about">About</string>
+    <string name="add_section">Add section</string>
+    <string name="add_lecture">Add lecture</string>
+    <string name="Studies">Study</string>
+    <string name="Highscore">Highscore</string>
+    <string name="Feedback">Feedback</string>
+    <string name="About">About</string>
+    <string name="about_us">About Us</string>
+    <string name="about_text">Nurses lecture room is a platform that is created to help
+    student get easy access to lecture note, past questions and also tips on how to answer
+    nursing council past questions.</string>
+    <string name="mission">Our mission is to ensure that nursing students study daily to improve
+    their knowledge and be better equipped to be able to state their rationale behind their action
+    with the lecture notes on the application.</string>
+    <string name="vision">Our vision is to ensure students pass their professionals exams with our
+    lecture notes and past questions.</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="edit_section">Edit Section</string>
+    <string name="delete_section">Delete section</string>
+    <string name="create_lec">Create Lecture</string>
+    <string name="delete_lecture">Delete Lecture</string>
+    <string name="edit_lecture">Edit Lecture</string>
+    <string name="create_que">Create Question</string>
 </resources>
