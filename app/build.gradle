@@ -1,13 +1,13 @@
 apply plugin: 'com.android.application'
 
 android {
-    compileSdkVersion 27
+    compileSdkVersion 29
     defaultConfig {
         applicationId "com.mazimia.mobile.nurselectureroom"
         minSdkVersion 16
-        targetSdkVersion 27
+        targetSdkVersion 29
         multiDexEnabled true
-        versionCode 5
+        versionCode 6
         versionName "1.0"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
     }
@@ -19,6 +19,12 @@ android {
     }
     productFlavors {
     }
+}
+
+def getApiKey() {
+    Properties props = new Properties()
+    props.load(new FileInputStream(new File('secrets.properties')))
+    return props['CURRENT_KEY']
 }
 
 dependencies {
@@ -37,6 +43,7 @@ dependencies {
     implementation 'com.android.support:gridlayout-v7:27.0.0'
     implementation 'com.android.support:support-v4:27.1.1'
     implementation 'com.android.support:multidex:1.0.3'
+    implementation 'com.google.android.gms:play-services-ads:18.2.0'
     annotationProcessor 'com.github.bumptech.glide:compiler:4.8.0'
     testImplementation 'junit:junit:4.12'
     androidTestImplementation 'com.android.support.test:runner:1.0.2'
