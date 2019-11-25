@@ -29,29 +29,29 @@ public class WelcomeActivity extends SignOutActivity {
         setContentView(R.layout.activity_welcome);
         String packageInstaller = getPackageManager().getInstallerPackageName(getPackageName());
 
-        if (packageInstaller == null || !packageInstaller.equals("com.android.vending")) {
-            AlertDialog alert = new AlertDialog.Builder(this)
-            .setTitle("Information")
-            .setIcon(R.drawable.ic_launcher_background)
-            .setMessage("There's an updated version out there! uninstall your current version"+
-                    "  and then navigate to Google Play Store and search for simple nursing to get it.")
-                    .setPositiveButton("Ok", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        // Do something
-                        String url = "https://play.google.com/store/apps/details?id=com.mazimia.mobile.nurselectureroom";
-                        Uri uri = Uri.parse(url);
-                        Intent intent = new Intent(Intent.ACTION_VIEW, uri);
-                        startActivity(intent);
-                        finish();
-                    }
-                })
-            .create();
-            alert.setCancelable(false);
-            alert.setCanceledOnTouchOutside(false);
-            alert.show();
-
-        }
+//        if (packageInstaller == null || !packageInstaller.equals("com.android.vending")) {
+//            AlertDialog alert = new AlertDialog.Builder(this)
+//            .setTitle("Information")
+//            .setIcon(R.drawable.ic_launcher_background)
+//            .setMessage("There's an updated version out there! uninstall your current version"+
+//                    "  and then navigate to Google Play Store and search for simple nursing to get it.")
+//                    .setPositiveButton("Ok", new DialogInterface.OnClickListener() {
+//                    @Override
+//                    public void onClick(DialogInterface dialog, int which) {
+//                        // Do something
+//                        String url = "https://play.google.com/store/apps/details?id=com.mazimia.mobile.nurselectureroom";
+//                        Uri uri = Uri.parse(url);
+//                        Intent intent = new Intent(Intent.ACTION_VIEW, uri);
+//                        startActivity(intent);
+//                        finish();
+//                    }
+//                })
+//            .create();
+//            alert.setCancelable(false);
+//            alert.setCanceledOnTouchOutside(false);
+//            alert.show();
+//
+//        }
 
         // Initialize the views created in the activity_welcome.xml file
         userProfile = findViewById(R.id.welcome_textview);

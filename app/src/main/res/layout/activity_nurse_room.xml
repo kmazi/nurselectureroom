@@ -48,7 +48,7 @@
 
     </com.mazimia.mobile.nurselectureroom.CustomRecyclerView>
 
-    <android.support.design.widget.FloatingActionButton
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/addSectionBtn"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -62,7 +62,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:srcCompat="@mipmap/plus" />
 
-    <android.support.design.widget.FloatingActionButton
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/refreshFoatBtn"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
