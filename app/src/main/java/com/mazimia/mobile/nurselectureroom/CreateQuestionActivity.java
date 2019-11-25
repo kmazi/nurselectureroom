@@ -1,7 +1,7 @@
 package com.mazimia.mobile.nurselectureroom;
 
-import android.support.annotation.NonNull;
-import android.support.v7.app.AppCompatActivity;
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
@@ -26,7 +26,7 @@ public class CreateQuestionActivity extends AppCompatActivity {
     public RadioButton queRBtn;
     public RadioButton objRBtn;
     public RadioButton theoryRBtn;
-    public android.support.v7.widget.GridLayout objGrid;
+    public androidx.gridlayout.widget.GridLayout objGrid;
     public Button createBtn;
 
     public TextView questionTxt;
