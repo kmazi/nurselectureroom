@@ -10,6 +10,8 @@ import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.android.gms.ads.AdRequest;
+import com.google.android.gms.ads.AdView;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 
@@ -21,12 +23,14 @@ public class WelcomeActivity extends SignOutActivity {
     private Button aboutBtn;
     private TextView userProfile;
     private TextView userImage;
+    private AdView mAdView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_welcome);
+
         String packageInstaller = getPackageManager().getInstallerPackageName(getPackageName());
 
 //        if (packageInstaller == null || !packageInstaller.equals("com.android.vending")) {
@@ -52,6 +56,11 @@ public class WelcomeActivity extends SignOutActivity {
 //            alert.show();
 //
 //        }
+
+        // Add code for admob
+        mAdView = findViewById(R.id.adView);
+        AdRequest adRequest = new AdRequest.Builder().build();
+        mAdView.loadAd(adRequest);
 
         // Initialize the views created in the activity_welcome.xml file
         userProfile = findViewById(R.id.welcome_textview);
